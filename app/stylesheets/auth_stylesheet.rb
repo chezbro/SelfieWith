@@ -27,13 +27,13 @@ class AuthStylesheet < ApplicationStylesheet
   def username(st)
     text_field st
     st.frame = {l: 30, t: 125, fr:30, h: 40}
-    styler.placeholder = "Username"
+    st.placeholder = "Username"
   end
 
   def password(st)
     text_field st
     st.frame = {l: 30, t: 180, fr:30, h: 40}
-    styler.placeholder = "Password"
+    st.placeholder = "Password"
   end
 
   def login_button(st)
