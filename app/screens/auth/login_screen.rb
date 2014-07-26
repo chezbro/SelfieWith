@@ -16,7 +16,39 @@ class LoginScreen < PM::Screen
     @password = rmq.append(UITextField, :password).get
 
     rmq.append(UIButton, :login_button).on(:tap) do |sender|
-      open HomeScreen
+      on_login
+    end
+  end
+
+  def on_login
+    rmq.animations.start_spinner
+    @user = app_delegate.user
+    if @username.text == '' or @password.text == ''
+      App.alert("Username and password can't be blank.")
+      rmq.animations.stop_spinner
+      return
+    end
+
+    params={}
+    params[:username] = @username.text
+    params[:password] = @password.text
+    PM.logger.info params
+
+    AFMotion::Client.shared.post("token", params) do |result|
+      if result.success?
+        @user.username = @username.text
+        @user.token = result.object["token"]
+        @user.save
+        app_delegate.showWelcomeScreen
+        rmq.animations.stop_spinner
+      elsif result.object && result.operation.response.statusCode.to_s =~ /40\d/
+        rmq.animations.stop_spinner
+        App.alert(result.object["errors"])
+      else
+        p result.object
+        rmq.animations.stop_spinner
+        App.alert(result.error.localizedDescription)
+      end
     end
   end
 

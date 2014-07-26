@@ -28,12 +28,15 @@ class AuthStylesheet < ApplicationStylesheet
     text_field st
     st.frame = {l: 30, t: 125, fr:30, h: 40}
     st.placeholder = "Username"
+    st.view.spellCheckingType = UITextSpellCheckingTypeNo
+    st.view.autocorrectionType = UITextAutocorrectionTypeNo
   end
 
   def password(st)
     text_field st
     st.frame = {l: 30, t: 180, fr:30, h: 40}
     st.placeholder = "Password"
+    st.view.secureTextEntry = true
   end
 
   def login_button(st)
