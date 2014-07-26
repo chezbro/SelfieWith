@@ -22,3 +22,4 @@ gem 'ProMotion', '~> 2.0.0.rc4'
 # If you need to access the network, use AFMotion; it uses AFNetworking
 gem 'afmotion'
 gem 'motion-testflight'
+gem 'motion-addressbook'
