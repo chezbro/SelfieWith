@@ -40,24 +40,16 @@ class WelcomeStylesheet < ApplicationStylesheet
   end
 
   def login_button(st)
+    standard_button st
     st.frame = {l: 30, fb: 15, fr:30, h: 40}
-    st.background_color = color.from_rgba(255,255,255, 0.32)
-    st.layer.borderWidth = 1
-    st.layer.borderColor = color.white.CGColor
-    st.color = color.white
-    st.corner_radius = 3
     st.text = "Log in"
-    st.view.setTitleColor(color.gray, forState: UIControlStateHighlighted)
   end
 
   def signup_button(st)
+    standard_button st
     st.frame = {l: 30, fb: -40, fr:30, h: 40}
-    st.background_color = color.from_rgba(255,255,255, 0.12)
-    st.layer.borderWidth = 1
-    st.layer.borderColor = color.white.CGColor
-    st.color = color.white
-    st.corner_radius = 3
     st.text = "Sign up"
-    st.view.setTitleColor(color.gray, forState: UIControlStateHighlighted)
+    st.background_color = color.from_rgba(255,255,255, 0.12)
   end
+
 end

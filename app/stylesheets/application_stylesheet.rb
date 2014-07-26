@@ -18,10 +18,24 @@ class ApplicationStylesheet < RubyMotionQuery::Stylesheet
     st.background_image = image.resource('screen-background')
   end
 
-  def standard_button(st)
-    st.frame = {w: 40, h: 18}
-    st.background_color = color.tint
-    st.color = color.white
+  def text_field(styler)
+    styler.background_color = color.from_rgba(255,255,255, 0.12)
+    styler.view.font = font.small
+    styler.text_alignment = :center
+    styler.corner_radius = 3
+    styler.text_color = color.white
+    # st.view.color = color.white
+    # st.view.setKeyboardType(UIKeyboardTypeEmailAddress)
+    # st.reloadInputViews
+  end
+
+  def standard_button(styler)
+    styler.background_color = color.from_rgba(255,255,255, 0.32)
+    styler.layer.borderWidth = 1
+    styler.layer.borderColor = color.white.CGColor
+    styler.color = color.white
+    styler.corner_radius = 3
+    styler.view.setTitleColor(color.gray, forState: UIControlStateHighlighted)
   end
 
   def standard_label(st)

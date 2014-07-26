@@ -1,24 +1,21 @@
-class WelcomeScreen < PM::Screen
-  title 'Welcome'
+class LoginScreen < PM::Screen
+  title 'Login'
 
   def on_load
     # Sets a top of 0 to be below the navigation control
     self.edgesForExtendedLayout = UIRectEdgeNone
 
-    rmq.stylesheet = WelcomeStylesheet
+    rmq.stylesheet = AuthStylesheet
     rmq(self.view).apply_style :root_view
 
     # Create your UIViews here
     @selfie_logo = rmq.append(UIImageView, :logo_white)
-    @selfie_icon = rmq.append(UIImageView, :icon_white)
-    @slogan_label = rmq.append(UILabel, :slogan_label).get
     @copyright_label = rmq.append(UILabel, :copyright_label).get
 
-    rmq.append(UIButton, :login_button).on(:tap) do |sender|
-      open LoginScreen
-    end
+    @username = rmq.append(UITextField, :username).focus.get
+    @password = rmq.append(UITextField, :password).get
 
-    rmq.append(UIButton, :signup_button).on(:tap) do |sender|
+    rmq.append(UIButton, :login_button).on(:tap) do |sender|
       open HomeScreen
     end
   end
