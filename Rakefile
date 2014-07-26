@@ -42,6 +42,9 @@ Motion::Project::App.setup do |app|
   #
   # app.vendor_project('vendor/Flurry', :static)
   # app.vendor_project('vendor/DSLCalendarView', :static, :cflags => '-fobjc-arc') # Using arc
+  app.vendor_project('vendor/GenericKeychain', :xcode, :headers_dir => 'GenericKeychain')
+  app.entitlements['keychain-access-groups'] = [ app.seed_id + '.' + app.identifier]
+
   #
   # app.pods do
   #   pod 'AFNetworking'

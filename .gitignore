@@ -19,3 +19,5 @@ nbproject
 .dat*.*
 *.swp
 *.orig
+vendor/GenericKeychain/*/*.a
+vendor/GenericKeychain/build*
