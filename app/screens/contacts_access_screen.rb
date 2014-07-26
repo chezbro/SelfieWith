@@ -1,42 +1,29 @@
-class HomeScreen < PM::Screen
-  title 'SelfieWith'
+class ContactsAccessScreen < PM::Screen
+  title 'ContactsAccessScreen'
 
   def on_load
     # Sets a top of 0 to be below the navigation control
     self.edgesForExtendedLayout = UIRectEdgeNone
 
     rmq.stylesheet = HomeStylesheet
-    init_nav
     rmq(self.view).apply_style :root_view
+
+    if AddressBook.request_authorization do |granted|
+        # this block is invoked sometime later
+        if granted
+          # do something now that the user has said "yes"
+          close
+        else
+          # do something now that the user has said "no"
+        end
+      end
+    # do something here before the user has decided
+    end
 
     # Create your UIViews here
     @hello_world_label = rmq.append(UILabel, :hello_world).get
-  end
-
-  def on_appear
-    get_contacts_access
-  end
-
-  def init_nav
-    set_nav_bar_button :left, system_item: :action, action: :nav_left_button
-    set_nav_bar_button :right, system_item: :refresh, action: :nav_right_button
-  end
-
-  def nav_left_button
-    puts 'Left button'
-  end
-
-  def nav_right_button
-    puts 'Right button'
-  end
-
-  def get_contacts_access
-    if AddressBook.authorized?
-      puts "This app is authorized!"
-    else
-      puts "This app is not authorized!"
-      open ContactsAccessScreen.new(nav_bar: false), modal: true, animated: true
-    end
+    @hello_world_label.text = "ContactsAccessScreen"
+    @hello_world_label.color = rmq.color.white
   end
 
   # Remove if you are only supporting portrait
