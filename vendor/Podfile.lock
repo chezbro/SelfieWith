@@ -20,11 +20,14 @@ PODS:
   - AFNetworking/UIKit (2.3.1):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
+  - JMImageCache (0.4.0)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.3.1)
+  - JMImageCache
 
 SPEC CHECKSUMS:
   AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
+  JMImageCache: ae1342abeb16d8c4f05c79c926fc49dc07f84dad
 
 COCOAPODS: 0.33.1

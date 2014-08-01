@@ -46,11 +46,11 @@ Motion::Project::App.setup do |app|
   app.entitlements['keychain-access-groups'] = [ app.seed_id + '.' + app.identifier]
 
   #
-  # app.pods do
+  app.pods do
   #   pod 'AFNetworking'
   #   pod 'SVProgressHUD'
-  #   pod 'JMImageCache'
-  # end
+    pod 'JMImageCache'
+  end
 
   # app.release do
   #   app.codesign_certificate = 'iPhone Developer: Chunlea Ju (XR5287VPL6)'
