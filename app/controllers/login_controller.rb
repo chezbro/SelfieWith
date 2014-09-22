@@ -89,7 +89,7 @@ class LoginController < UIViewController
             if result["user"]["confirmed_at"]
               UIApplication.sharedApplication.delegate.open_main_controller
             else
-              self.navigationController.pushViewController(JoinSmsController.new(user: result["user"]), animated:true)
+              self.navigationController.pushViewController(JoinSMSController.new(user: result["user"]), animated:true)
             end
           else
             self.navigationController.pushViewController(JoinPhoneController.new(user: result["user"]), animated:true)

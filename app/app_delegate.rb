@@ -2,6 +2,7 @@ class AppDelegate
   attr_reader :window
 
   def application(application, didFinishLaunchingWithOptions:launchOptions)
+    UIApplication.sharedApplication.statusBarStyle = UIStatusBarStyleLightContent
     server
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
 
@@ -14,7 +15,7 @@ class AppDelegate
     else
       open_main_controller
     end
-    # main_controller = MainController.new
+    # main_controller = CountryPickerController.new
     # @window.rootViewController = UINavigationController.alloc.initWithRootViewController(main_controller)
 
     @window.makeKeyAndVisible
