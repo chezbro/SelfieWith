@@ -23,6 +23,7 @@ class LoginController < UIViewController
 
     rmq.append(UIButton, :forget_password).on(:tap) do |sender|
       p "Forget your password?"
+      SimpleSI.alert('TODO:Forget password funciton will be done before release!')
     end
     # @hint = rmq.append(UILabel, :hint_label).get
     # rmq(:hint_label).hide
