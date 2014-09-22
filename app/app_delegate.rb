@@ -5,11 +5,33 @@ class AppDelegate
     server
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
 
-    main_controller = MainController.new
-    @window.rootViewController = UINavigationController.alloc.initWithRootViewController(main_controller)
+    if Auth.needlogin?
+      open_welcome_controller
+    elsif Auth.needconfirm?
+      Auth.reset
+      open_confirm_controller
+      # open_confirm_controller
+    else
+      open_main_controller
+    end
+    # main_controller = MainController.new
+    # @window.rootViewController = UINavigationController.alloc.initWithRootViewController(main_controller)
 
     @window.makeKeyAndVisible
     true
+  end
+
+  def open_welcome_controller
+    @window.rootViewController = UINavigationController.alloc.initWithRootViewController(WelcomeController.new)
+  end
+  def open_confirm_controller
+    welcome_screen = WelcomeController.new
+    @window.rootViewController = UINavigationController.alloc.initWithRootViewController(welcome_screen)
+    welcome_screen.needconfirm
+  end
+  def open_main_controller
+    main_controller = MainController.new
+    @window.rootViewController = UINavigationController.alloc.initWithRootViewController(main_controller)
   end
 
   def server
