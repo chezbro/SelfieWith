@@ -1,0 +1,36 @@
+PODS:
+  - AFNetworking (2.4.1):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+    - AFNetworking/UIKit
+  - AFNetworking/NSURLConnection (2.4.1):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.4.1):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (2.4.1)
+  - AFNetworking/Security (2.4.1)
+  - AFNetworking/Serialization (2.4.1)
+  - AFNetworking/UIKit (2.4.1):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+  - JMImageCache (0.4.0)
+  - UICKeyChainStore (1.0.5)
+
+DEPENDENCIES:
+  - AFNetworking (~> 2.4.1)
+  - JMImageCache
+  - UICKeyChainStore
+
+SPEC CHECKSUMS:
+  AFNetworking: 0aabc6fae66d6e5d039eeb21c315843c7aae51ab
+  JMImageCache: ae1342abeb16d8c4f05c79c926fc49dc07f84dad
+  UICKeyChainStore: 4f9719600cc70025064e26f28f1210bcfc3b0c35
+
+COCOAPODS: 0.33.1
