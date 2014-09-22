@@ -41,6 +41,17 @@ class LoginControllerStylesheet < ApplicationStylesheet
     st.text = 'Password'
   end
 
+  def forget_password(st)
+    standard_button st
+    st.background_color = color.clear
+    st.font = font.xsmall
+    st.color = color.nav_text
+    st.frame = {l:20, fr: 20, t:220, h:40}
+    st.text  = "Forgot Password"
+    st.view.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight
+
+  end
+
   def hint_label(st)
     st.frame          = {l:10, t:70, fr: 10, h: 17, centered: :horizontal}
     st.text_alignment = :center

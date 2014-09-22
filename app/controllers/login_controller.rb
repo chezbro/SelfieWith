@@ -21,6 +21,9 @@ class LoginController < UIViewController
     @username.returnKeyType = UIReturnKeyNext
     @password.returnKeyType = UIReturnKeyGo
 
+    rmq.append(UIButton, :forget_password).on(:tap) do |sender|
+      p "Forget your password?"
+    end
     # @hint = rmq.append(UILabel, :hint_label).get
     # rmq(:hint_label).hide
   end
