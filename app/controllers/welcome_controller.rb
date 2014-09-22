@@ -35,7 +35,7 @@ class WelcomeController < UIViewController
     if Auth.phone == ""
       self.navigationController.pushViewController(JoinPhoneController.new(user: user), animated:true)
     elsif Auth.confirmed_at == ""
-      self.navigationController.pushViewController(JoinSmsController.new(user: user), animated:true)
+      self.navigationController.pushViewController(JoinSMSController.new(user: user), animated:true)
     end
   end
 
