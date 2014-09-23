@@ -31,8 +31,47 @@ class AppDelegate
     welcome_screen.needconfirm
   end
   def open_main_controller
-    main_controller = MainController.new
-    @window.rootViewController = UINavigationController.alloc.initWithRootViewController(main_controller)
+    @takeSelfieTab = UIViewController.alloc.init
+    @tabBar = UITabBarController.alloc.init
+    UITabBar.appearance.setBarStyle UIBarStyleBlack
+    UITabBar.appearance.setSelectionIndicatorImage rmq.image.resource('tabBarItem_selected')
+    UITabBar.appearance.setSelectedImageTintColor rmq.color.white
+    @tabBar.viewControllers = [
+      UINavigationController.alloc.initWithRootViewController(MainController.new),
+      @takeSelfieTab,
+      UINavigationController.alloc.initWithRootViewController(MainController.new),
+    ]
+    @tabBar.tabBar.items[0].image = rmq.image.resource('tabbar_home')
+    @tabBar.tabBar.items[1].image = rmq.image.resource('tabbar_take')
+    @tabBar.tabBar.items[2].image = rmq.image.resource('tabbar_contacts')
+    @tabBar.tabBar.items[0].imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
+    @tabBar.tabBar.items[1].imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
+    @tabBar.tabBar.items[2].imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
+    @tabBar.selectedIndex = 0
+    @tabBar.delegate = self
+    @tabBar.tabBar.frame = CGRectMake(0, UIScreen.mainScreen.bounds.size.height-80, UIScreen.mainScreen.bounds.size.width, 80)
+    @tabBar.tabBar.subviews.first.frame = CGRectMake(0, 0, @tabBar.tabBar.frame.size.width, 80)
+    @tabBar
+    @window.rootViewController = @tabBar
+    # main_controller = MainController.new
+    # @window.rootViewController = UINavigationController.alloc.initWithRootViewController(main_controller)
+  end
+  def tabBarController(tabBarController, shouldSelectViewController: viewController)
+    tabBarController.tabBar.frame = CGRectMake(0, UIScreen.mainScreen.bounds.size.height-80, UIScreen.mainScreen.bounds.size.width, 80)
+    tabBarController.tabBar.subviews.first.frame = CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, 80)
+    if viewController == @takeSelfieTab
+      @takeSelfie = TakeSelfieController.new
+      @takeSelfie.transitioningDelegate = self
+      @takeSelfie.modalPresentationStyle = UIModalPresentationCustom
+      # @takeSelfie.delegate
+      viewController.presentViewController(@takeSelfie, animated:true, completion:nil)
+      # vc2 = TakeSelfieController.new
+      # viewController.modalPresentationStyle = UIModalPresentationCurrentContext
+      # viewController.presentViewController(TakeSelfieController.new, animated:true, completion:-> {
+      #   viewController.view.tintAdjustmentMode = UIViewTintAdjustmentModeDimmed
+      # })
+    end
+    return viewController != @takeSelfieTab
   end
 
   def server

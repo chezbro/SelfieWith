@@ -1,4 +1,4 @@
-class MainController < UIViewController 
+class MainController < UIViewController
 
   def viewDidLoad
     super
@@ -14,9 +14,16 @@ class MainController < UIViewController
     @hello_world_label = rmq.append(UILabel, :hello_world).get
   end
 
-  def init_nav
-    self.title = 'Title Here'
+  def viewWillAppear(animated)
+    UIApplication.sharedApplication.statusBarStyle = UIStatusBarStyleLightContent
+    self.navigationController.setNavigationBarHidden(true, animated: true)
+    self.tabBarController.tabBar.frame = CGRectMake(0, UIScreen.mainScreen.bounds.size.height-80, UIScreen.mainScreen.bounds.size.width, 80)
+    self.tabBarController.tabBar.subviews.first.frame = CGRectMake(0, 0, self.tabBarController.tabBar.frame.size.width, 80)
+    # self.navigationController.view.rmq(TopBar).show
+  end
 
+
+  def init_nav
     self.navigationItem.tap do |nav|
       nav.leftBarButtonItem = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemAction,
                                                                            target: self, action: :nav_left_button)
@@ -48,8 +55,8 @@ end
 
 __END__
 
-# You don't have to reapply styles to all UIViews, if you want to optimize, 
-# another way to do it is tag the views you need to restyle in your stylesheet, 
+# You don't have to reapply styles to all UIViews, if you want to optimize,
+# another way to do it is tag the views you need to restyle in your stylesheet,
 # then only reapply the tagged views, like so:
 def logo(st)
   st.frame = {t: 10, w: 200, h: 96}

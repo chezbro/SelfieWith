@@ -6,7 +6,7 @@ class MainStylesheet < ApplicationStylesheet
   end
 
   def root_view(st)
-    st.background_color = color.white
+    st.background_color = color.bg_black
   end
 
   def hello_world(st)
