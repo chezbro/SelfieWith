@@ -7,8 +7,14 @@ class API
         if result.success?
           block.call(result.object) if block
         elsif result.object && result.operation.response.statusCode.to_s =~ /40\d/
+          error = "There is something wrong."
+          if result.object["message"].kind_of?(String)
+            error = result.object["message"].to_s
+          else
+            error = result.object["message"].map { |e| e.join(" ") }.join(", ")
+          end
           SimpleSI.alert({
-            message: result.object["message"].to_s,
+            message: error.capitalize,
             transition: "bounce",
             buttons: [
               {title: "Got it", type: "cancel"} # action is secondary
