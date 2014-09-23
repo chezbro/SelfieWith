@@ -17,4 +17,10 @@ class MainStylesheet < ApplicationStylesheet
     st.text = 'Hello World'
   end
 
+  def logout_btn(st)
+    standard_button st
+    st.frame = {t: 200, l: 20, fr:20, h: 45}
+    st.text = "Logout"
+  end
+
 end

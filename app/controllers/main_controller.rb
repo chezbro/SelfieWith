@@ -12,6 +12,9 @@ class MainController < UIViewController
 
     # Create your UIViews here
     @hello_world_label = rmq.append(UILabel, :hello_world).get
+    rmq.append(UIButton, :logout_btn).on(:tap) do |sender|
+      UIApplication.sharedApplication.delegate.logout
+    end
   end
 
   def viewWillAppear(animated)
