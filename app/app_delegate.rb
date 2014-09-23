@@ -17,7 +17,6 @@ class AppDelegate
     end
     # main_controller = CountryPickerController.new
     # @window.rootViewController = UINavigationController.alloc.initWithRootViewController(main_controller)
-
     @window.makeKeyAndVisible
     true
   end
@@ -53,8 +52,6 @@ class AppDelegate
     @tabBar.tabBar.subviews.first.frame = CGRectMake(0, 0, @tabBar.tabBar.frame.size.width, 80)
     @tabBar
     @window.rootViewController = @tabBar
-    # main_controller = MainController.new
-    # @window.rootViewController = UINavigationController.alloc.initWithRootViewController(main_controller)
   end
   def tabBarController(tabBarController, shouldSelectViewController: viewController)
     tabBarController.tabBar.frame = CGRectMake(0, UIScreen.mainScreen.bounds.size.height-80, UIScreen.mainScreen.bounds.size.width, 80)
