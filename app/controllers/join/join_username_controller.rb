@@ -263,6 +263,14 @@ class JoinUsernameController < UIViewController
             rmq(:email_text_field).animations.sink_and_throb
           end
         else
+          SimpleSI.alert({
+            title: "You new password is week",
+            message: "You need a strong password, which at least 8 characters comprised of numbers, uppercase, and lowercase",
+            transition: "bounce",
+            buttons: [
+              {title: "Got it", type: "cancel"} # action is secondary
+            ]
+          })
           update_hint_error("You need a strong password")
           rmq(:password_text_field).animations.sink_and_throb
         end

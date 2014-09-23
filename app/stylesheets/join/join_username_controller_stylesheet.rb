@@ -106,6 +106,7 @@ class JoinUsernameControllerStylesheet < ApplicationStylesheet
     st.view.autocorrectionType = UITextAutocorrectionTypeNo
     st.view.keyboardType       = UIKeyboardTypeEmailAddress
     st.left_view_mode          = UITextFieldViewModeAlways
+    st.view.autocapitalizationType = UITextAutocapitalizationTypeNone
     st.view.setValue(color.bg_black, forKeyPath:"_placeholderLabel.textColor")
   end
   def email_text_label(st)
