@@ -1,4 +1,6 @@
-class ContactsController < UIViewController
+class ContactsController < UITableViewController
+
+  CONTACTS_CELL_ID = "ContactsCell"
 
   def viewDidLoad
     super
@@ -6,7 +8,108 @@ class ContactsController < UIViewController
     rmq.stylesheet = ContactsControllerStylesheet
     rmq(self.view).apply_style :root_view
 
-    # Create your views here
+    # rmq(self.navigationController.view).append(TopBar).get.tap do |top_bar|
+    #   top_bar.delegate = self
+    # end
+
+    view.tap do |table|
+      table.delegate = self
+      table.dataSource = self
+      table.setSeparatorInset UIEdgeInsetsZero
+      rmq(table).apply_style :table
+    end
+  end
+
+  def viewWillAppear(animated)
+    load_data
+    tableView.reloadData
+
+    UIApplication.sharedApplication.statusBarStyle = UIStatusBarStyleLightContent
+    self.navigationController.setNavigationBarHidden(true, animated: true)
+    self.tabBarController.tabBar.frame = CGRectMake(0, UIScreen.mainScreen.bounds.size.height-80, UIScreen.mainScreen.bounds.size.width, 80)
+    # self.navigationController.view.rmq(TopBar).show
+    # self.navigationController.view.rmq(TopBar).show
+  end
+
+  def load_data
+    @contacts = UIApplication.sharedApplication.delegate.contacts
+    if @contacts.empty?
+      UIApplication.sharedApplication.delegate.get_contacts do
+        load_data
+        tableView.reloadData
+      end
+    end
+
+    @data = @contacts.group_by {|c| c.composite_name[0] }
+    @sections = @data.keys
+  end
+
+  # def tableView(table_view, titleForHeaderInSection: section)
+  #   @sections[section]
+  # end
+
+  def numberOfSectionsInTableView(table_view)
+    @sections.count
+  end
+
+  def sectionIndexTitlesForTableView(table_view)
+    @sections
+  end
+
+  def tableView(table_view, numberOfRowsInSection: section)
+    @data[@sections[section]].length
+  end
+
+  def tableView(table_view, heightForRowAtIndexPath: index_path)
+    rmq.stylesheet.contacts_cell_height
+  end
+
+  def tableView(table_view, cellForRowAtIndexPath: index_path)
+    data_row = @data[@sections[index_path.section]][index_path.row]
+
+    cell = table_view.dequeueReusableCellWithIdentifier(CONTACTS_CELL_ID) || begin
+      rmq.create(ContactsCell, :contacts_cell, reuse_identifier: CONTACTS_CELL_ID).get
+
+      # If you want to change the style of the cell, you can do something like this:
+      #rmq.create(ContactsCell, :contacts_cell, reuse_identifier: CONTACTS_CELL_ID, cell_style: UITableViewCellStyleSubtitle).get
+    end
+    cell.update(data_row)
+    cell
+  end
+
+  def tableView(table_view, didSelectRowAtIndexPath:index_path)
+    person = @data[@sections[index_path.section]][index_path.row]
+    if person.username
+      SimpleSI.alert({
+        title: "TODO: Should open the profile screen",
+        message: "This person is #{person.composite_name} #{person.username.nil?? "You should invite him/her to join SelfieWith":"and in our database, his/her username is #{person.username}"}",
+        transition: "bounce",
+        buttons: [
+          {title: "Got it", type: "cancel"} # action is secondary
+        ]
+      })
+    else
+      SimpleSI.alert({
+        title: "Invite #{person.composite_name}",
+        message: "Invite your friends to use SefieWith.",
+        transition: "drop_down",
+        buttons: [
+          {title: "Send Invite", type: "default", action: :send_invite},
+          {title: "No Thanks", type: "cancel"} # action is secondary
+        ],
+        delegate: self
+      })
+    end
+
+    # self.navigationController.view.rmq(TopBar).animations.fade_out
+    # self.navigationController.setNavigationBarHidden(false, animated: true)
+    # a = ProfileController.new
+    # a.hidesBottomBarWhenPushed = true
+    # self.navigationController.pushViewController(a, animated:true)
+  end
+
+  def send_invite
+    SimpleSI.alert("(This is fake for now) Hi, thank you for invite your friends to use SelfieWith.")
   end
 
   # Remove if you are only supporting portrait
