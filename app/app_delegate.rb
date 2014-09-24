@@ -1,5 +1,6 @@
 class AppDelegate
   attr_reader :window
+  attr_accessor :contacts
 
   def application(application, didFinishLaunchingWithOptions:launchOptions)
     UIApplication.sharedApplication.statusBarStyle = UIStatusBarStyleLightContent
@@ -11,12 +12,10 @@ class AppDelegate
     elsif Auth.needconfirm?
       Auth.reset
       open_confirm_controller
-      # open_confirm_controller
     else
       open_main_controller
     end
-    # main_controller = CountryPickerController.new
-    # @window.rootViewController = UINavigationController.alloc.initWithRootViewController(main_controller)
+
     @window.makeKeyAndVisible
     true
   end
@@ -38,7 +37,7 @@ class AppDelegate
     @tabBar.viewControllers = [
       UINavigationController.alloc.initWithRootViewController(MainController.new),
       @takeSelfieTab,
-      UINavigationController.alloc.initWithRootViewController(MainController.new),
+      UINavigationController.alloc.initWithRootViewController(ContactsController.new),
     ]
     @tabBar.tabBar.items[0].image = rmq.image.resource('tabbar_home')
     @tabBar.tabBar.items[1].image = rmq.image.resource('tabbar_take')
@@ -90,6 +89,42 @@ class AppDelegate
   def logout
     Auth.reset
     open_welcome_controller
+  end
+
+  def get_contacts(&block)
+    if AddressBook.authorized?
+      UIApplication.sharedApplication.networkActivityIndicatorVisible = true
+
+      # NSLog("AddressBook.authorized!")
+      ab = AddressBook::AddrBook.new
+      phones_list = []
+      # emails_list = []
+      ab.people.each do |person|
+        phones_list += person.phones.map {|p| p[:value]}
+        # emails_list += person.emails.map {|p| p[:value]}
+      end
+
+      params = {}
+      params[:phones] = phones_list
+      # params[:emails] = emails_list
+      API.post('contacts', params) do |result|
+        UIApplication.sharedApplication.networkActivityIndicatorVisible = false
+        if result
+          @contacts = []
+          ab.people.each do |person|
+            phones = person.phones.map {|p| p[:value]}
+            # emails_list += person.emails.map {|p| p[:value]}
+            phones.each do |phone|
+              if result.keys.include? phone
+                person.username = result[phone.to_s]
+              end
+            end
+            @contacts << person
+          end
+        else
+        end
+      end
+    end
   end
 
 end

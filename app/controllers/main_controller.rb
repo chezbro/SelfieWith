@@ -2,6 +2,15 @@ class MainController < UIViewController
 
   def viewDidLoad
     super
+    UIApplication.sharedApplication.delegate.get_contacts
+    if AddressBook.authorized?
+      ab = AddressBook::AddrBook.new
+      ab.observe!
+
+      App.notification_center.observe :addressbook_updated do |notification|
+        UIApplication.sharedApplication.delegate.get_contacts
+      end
+    end
 
     # Sets a top of 0 to be below the navigation control, it's best not to do this
     # self.edgesForExtendedLayout = UIRectEdgeNone
@@ -24,13 +33,11 @@ class MainController < UIViewController
     self.tabBarController.tabBar.subviews.first.frame = CGRectMake(0, 0, self.tabBarController.tabBar.frame.size.width, 80)
     # self.navigationController.view.rmq(TopBar).show
     if AddressBook.authorized?
-      puts "This app is authorized!"
     else
-      puts "This app is not authorized!"
-      @takeSelfie = AskContactsPermissionController.new
-      @takeSelfie.transitioningDelegate = self
-      @takeSelfie.modalPresentationStyle = UIModalPresentationCustom
-      self.tabBarController.presentViewController(@takeSelfie, animated:true, completion:nil)
+      @ask_permission = AskContactsPermissionController.new
+      @ask_permission.transitioningDelegate = self
+      @ask_permission.modalPresentationStyle = UIModalPresentationCustom
+      self.tabBarController.presentViewController(@ask_permission, animated:false, completion:nil)
     end
   end
 

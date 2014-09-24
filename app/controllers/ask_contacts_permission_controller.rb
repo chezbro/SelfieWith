@@ -10,7 +10,6 @@ class AskContactsPermissionController < UIViewController
 
     if AddressBook.request_authorization do |granted|
         if granted
-          p "UIApplication.sharedApplication.delegate.open_main_controller"
           self.dismissViewControllerAnimated(true, completion:nil)
         end
       end
