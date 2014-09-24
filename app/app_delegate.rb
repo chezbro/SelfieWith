@@ -3,6 +3,7 @@ class AppDelegate
   attr_accessor :contacts
 
   def application(application, didFinishLaunchingWithOptions:launchOptions)
+    @contacts ||= []
     UIApplication.sharedApplication.statusBarStyle = UIStatusBarStyleLightContent
     server
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
@@ -111,16 +112,18 @@ class AppDelegate
         UIApplication.sharedApplication.networkActivityIndicatorVisible = false
         if result
           @contacts = []
-          ab.people.each do |person|
+          ab.people{|p| p.composite_name}.each do |person|
             phones = person.phones.map {|p| p[:value]}
             # emails_list += person.emails.map {|p| p[:value]}
             phones.each do |phone|
               if result.keys.include? phone
-                person.username = result[phone.to_s]
+                person.username = result[phone.to_s][:username]
+                person.avatar   = result[phone.to_s][:avatar]
               end
             end
             @contacts << person
           end
+          block.call if block
         else
         end
       end
