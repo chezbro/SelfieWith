@@ -8,9 +8,9 @@ class ContactsController < UITableViewController
     rmq.stylesheet = ContactsControllerStylesheet
     rmq(self.view).apply_style :root_view
 
-    # rmq(self.navigationController.view).append(TopBar).get.tap do |top_bar|
-    #   top_bar.delegate = self
-    # end
+    rmq(self.navigationController.view).append(TopBar).get.tap do |top_bar|
+      top_bar.delegate = self
+    end
 
     view.tap do |table|
       table.delegate = self

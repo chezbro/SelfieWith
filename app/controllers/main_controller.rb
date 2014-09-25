@@ -19,6 +19,10 @@ class MainController < UIViewController
     init_nav
     rmq(self.view).apply_style :root_view
 
+    rmq(self.navigationController.view).append(TopBar).get.tap do |top_bar|
+      top_bar.delegate = self
+    end
+
     # Create your UIViews here
     @hello_world_label = rmq.append(UILabel, :hello_world).get
     rmq.append(UIButton, :logout_btn).on(:tap) do |sender|

@@ -1,6 +1,7 @@
 class ContactsControllerStylesheet < ApplicationStylesheet
 
   include ContactsCellStylesheet
+  include TopBarStylesheet
 
   def setup
     # Add stylesheet specific setup stuff here.

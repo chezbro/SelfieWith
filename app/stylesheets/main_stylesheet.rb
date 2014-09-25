@@ -1,5 +1,7 @@
 class MainStylesheet < ApplicationStylesheet
 
+  include TopBarStylesheet
+
   def setup
     # Add sytlesheet specific setup stuff here.
     # Add application specific setup stuff in application_stylesheet.rb
