@@ -4,7 +4,7 @@ gem 'rake'
 gem 'ruby_motion_query', github: 'infinitered/rmq'
 
 # Useful tools that most people use
-gem 'bubble-wrap', :require => ['bubble-wrap/core']
+gem 'bubble-wrap', :require => ['bubble-wrap/core', 'bubble-wrap/mail']
 
 # If you use a cocoapod (find them here https://www.cocoacontrols.com)
 #gem 'motion-cocoapods'

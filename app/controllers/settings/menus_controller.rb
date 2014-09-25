@@ -61,7 +61,7 @@ class MenusController < UITableViewController
           },
           {
             title: "Report a Problem",
-            action: "action"
+            action: "report_bug"
           },
           {
             title: "Legal",
@@ -136,6 +136,34 @@ class MenusController < UITableViewController
 
   def logout
     UIApplication.sharedApplication.delegate.logout
+  end
+
+  def report_bug
+    BW::Mail.compose(
+      delegate: @delegate, # optional, defaults to rootViewController
+      to: [ "support@selfiewith.co" ],
+      # cc: [ "itchy@example.com", "scratchy@example.com" ],
+      # bcc: [ "jerry@example.com" ],
+      html: true,
+      subject: "Report a Problem",
+      message: "Please descript your problem.",
+      animated: false
+    ) do |result, error|
+      if result.sent?      # => boolean
+        SimpleSI.alert({
+          title: "Thank you",
+          message: "Thank you for your mail",
+          transition: "drop_down",
+          buttons: [
+            {title: "OK", type: "cancel"} # action is secondary
+          ]
+        })
+      elsif result.canceled?  # => boolean
+      elsif result.saved?     # => boolean
+      elsif result.failed?    # => boolean
+        NSLog("%@", error)             # => NSError
+      end
+    end
   end
 
   # Remove if you are only supporting portrait
