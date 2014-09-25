@@ -15,6 +15,7 @@ module ContactsCellStylesheet
     st.layer.cornerRadius  = 25
     st.layer.masksToBounds = true
     st.image               = image.resource('avatar')
+    st.view.contentMode    = UIViewContentModeScaleAspectFill
   end
 
   def name(st)
