@@ -19,7 +19,7 @@ class TakeSelfieControllerStylesheet < ApplicationStylesheet
     # st.image_highlighted = image.resource('logo')
   end
   def toolbar(st)
-    st.frame              = {l:0, fr:0, h:80, fb: 0}
+    st.frame              = {l:0, fr:0, h:80, t: st.superview.size.height - 80}
     # st.background_color = color.red
     st.layer.zPosition    = 100
   end
@@ -39,7 +39,7 @@ class TakeSelfieControllerStylesheet < ApplicationStylesheet
     st.image_highlighted = image.resource('toggle_camera_btn')
   end
   def use_toolbar(st)
-    st.frame              = {l:0, fr:0, h:80, fb: 0}
+    st.frame              = {l:0, fr:0, h:80, t: st.superview.size.height - 80}
     # st.background_color = color.red
     st.layer.zPosition    = 100
   end
@@ -66,7 +66,7 @@ class TakeSelfieControllerStylesheet < ApplicationStylesheet
   end
 
   def chose_contact_overlay(st)
-    st.frame = {fb:0, t: st.superview.size.height/2, l:0, fr:0}
+    st.frame = {t: st.superview.size.height/2, l:0, fr:0, h: st.superview.size.height/2}
   end
   def person_reminder(st)
     st.frame          = {t: 10, l:0, fr:0, h: 30}

@@ -1,4 +1,11 @@
 class TakeSelfieController < UIViewController
+  attr_accessor :main_screen
+
+  def self.new(args = {})
+    s = self.alloc
+    s.main_screen = WeakRef.new(args[:main])
+    s
+  end
 
   def viewDidLoad
     super
@@ -12,7 +19,8 @@ class TakeSelfieController < UIViewController
     # Create your views here
     rmq.append(UIButton, :close_btn).on(:tap) do
       UIApplication.sharedApplication.setStatusBarHidden(false, withAnimation:UIStatusBarAnimationFade)
-      self.dismissModalViewControllerAnimated(true)
+      # self.dismissModalViewControllerAnimated(true)
+      self.dismissViewControllerAnimated(true, completion:nil)
     end
 
     rmq.append(UIView, :toolbar)
@@ -155,8 +163,51 @@ class TakeSelfieController < UIViewController
     @person_name_label.text = person.composite_name
     rmq(:chose_contact_overlay).append(UIButton, :person_picker_done).animations.fade_in.on(:tap) do |sender|
       p person
-      UIApplication.sharedApplication.setStatusBarHidden(false, withAnimation:UIStatusBarAnimationFade)
-      self.dismissViewControllerAnimated(true, completion:nil)
+      params={}
+      params[:name]   = person.composite_name
+      params[:phones] = person.phones.map {|p| p[:value]}
+      params[:email]  = person.email
+
+      data = UIImageJPEGRepresentation(@image_view.image, 1.0)
+
+      UIApplication.sharedApplication.networkActivityIndicatorVisible = true
+      AFMotion::Client.shared.multipart_post("upload", params) do |result, form_data|
+        UIApplication.sharedApplication.networkActivityIndicatorVisible = false
+        if form_data
+          if data
+            form_data.appendPartWithFileData(data, name: "selfie", fileName:"selfie.jpg", mimeType: "image/jpeg")
+          end
+        elsif result.success?
+          rmq.animations.stop_spinner
+          UIApplication.sharedApplication.setStatusBarHidden(false, withAnimation:UIStatusBarAnimationFade)
+          self.dismissViewControllerAnimated(true, completion:nil)
+          @main_screen.load_data
+        elsif result.object && result.operation.response.statusCode.to_s =~ /40\d/
+          if result.object["message"].kind_of?(String)
+            error = result.object["message"].to_s
+          else
+            error = result.object["message"].map { |e| e.join(" ") }.join(", ")
+          end
+          SimpleSI.alert({
+            message: error.capitalize!,
+            transition: "bounce",
+            buttons: [
+              {title: "Got it", type: "cancel"} # action is secondary
+            ]
+          })
+          rmq.animations.stop_spinner
+        else
+          SimpleSI.alert({
+            message: result.error.localizedDescription,
+            transition: "bounce",
+            buttons: [
+              {title: "Got it", type: "cancel"} # action is secondary
+            ]
+          })
+          rmq.animations.stop_spinner
+        end
+      end
+
     end
   end
 
