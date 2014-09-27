@@ -51,6 +51,7 @@ class MainController < UICollectionViewController
     # Refresh
     @refresh_control = UIRefreshControl.alloc.init
     @refresh_control.tintColor = rmq.color.white
+    @refresh_control.backgroundColor = rmq.color.clear
     @refresh_control.attributedTitle = NSAttributedString.alloc.initWithString("Pull to refresh", attributes: {NSForegroundColorAttributeName:UIColor.redColor})
     @refresh_control.addTarget(self, action:'refreshView:', forControlEvents:UIControlEventValueChanged)
     self.collectionView.addSubview(@refresh_control)
