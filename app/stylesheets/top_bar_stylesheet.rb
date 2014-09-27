@@ -49,6 +49,7 @@ module TopBarStylesheet
     st.layer.borderColor   = color.white.CGColor
     st.layer.cornerRadius  = 32
     st.layer.masksToBounds = true
+    st.view.contentMode    = UIViewContentModeScaleAspectFill
   end
   def username_view(st)
     st.frame          = {fb:22, l:60, fr:60, h: 44, centered: :horizontal}
@@ -79,6 +80,7 @@ module TopBarStylesheet
     st.layer.borderColor   = color.white.CGColor
     st.layer.cornerRadius  = 20
     st.layer.masksToBounds = true
+    st.view.contentMode    = UIViewContentModeScaleAspectFill
   end
   def username(st)
     st.frame          = {l:65, fr:0, h: 18, centered: :vertical}
@@ -92,6 +94,7 @@ module TopBarStylesheet
     st.layer.borderColor   = color.white.CGColor
     st.layer.cornerRadius  = 32
     st.layer.masksToBounds = true
+    st.view.contentMode    = UIViewContentModeScaleAspectFill
   end
   def username_profile(st)
     st.frame          = {t:158, l:10, fr:10, h: 18, centered: :horizontal}

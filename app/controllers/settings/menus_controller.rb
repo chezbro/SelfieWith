@@ -134,6 +134,10 @@ class MenusController < UITableViewController
     end
   end
 
+  def action
+    SimpleSI.alert("TODO: This menu's function will be done later, but you can try Log Out")
+  end
+
   def logout
     UIApplication.sharedApplication.delegate.logout
   end
