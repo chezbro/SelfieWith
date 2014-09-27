@@ -1,9 +1,10 @@
 class AppDelegate
   attr_reader :window
-  attr_accessor :contacts
+  attr_accessor :contacts, :selfies
 
   def application(application, didFinishLaunchingWithOptions:launchOptions)
     @contacts ||= []
+    @selfies  ||= []
     UIApplication.sharedApplication.statusBarStyle = UIStatusBarStyleLightContent
     server
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
@@ -35,8 +36,9 @@ class AppDelegate
     UITabBar.appearance.setBarStyle UIBarStyleBlack
     UITabBar.appearance.setSelectionIndicatorImage rmq.image.resource('tabBarItem_selected')
     UITabBar.appearance.setSelectedImageTintColor rmq.color.white
+    @main_screen = MainController.new
     @tabBar.viewControllers = [
-      UINavigationController.alloc.initWithRootViewController(MainController.new),
+      UINavigationController.alloc.initWithRootViewController(@main_screen),
       @takeSelfieTab,
       UINavigationController.alloc.initWithRootViewController(ContactsController.new),
     ]
@@ -57,7 +59,7 @@ class AppDelegate
     tabBarController.tabBar.frame = CGRectMake(0, UIScreen.mainScreen.bounds.size.height-80, UIScreen.mainScreen.bounds.size.width, 80)
     tabBarController.tabBar.subviews.first.frame = CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, 80)
     if viewController == @takeSelfieTab
-      @takeSelfie = TakeSelfieController.new
+      @takeSelfie = TakeSelfieController.new(main: @main_screen)
       @takeSelfie.transitioningDelegate = self
       @takeSelfie.modalPresentationStyle = UIModalPresentationCustom
       # @takeSelfie.delegate
@@ -126,6 +128,20 @@ class AppDelegate
           block.call if block
         else
         end
+      end
+    end
+  end
+  def get_selfies(&block)
+    UIApplication.sharedApplication.networkActivityIndicatorVisible = true
+
+    params = {}
+    API.post('selfies', params) do |result|
+      UIApplication.sharedApplication.networkActivityIndicatorVisible = false
+      if result
+        p result
+        @selfies = result[:selfies]
+        block.call if block
+      else
       end
     end
   end

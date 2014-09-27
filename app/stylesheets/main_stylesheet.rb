@@ -1,6 +1,7 @@
 class MainStylesheet < ApplicationStylesheet
 
   include TopBarStylesheet
+  include SelfieCellStylesheet
 
   def setup
     # Add sytlesheet specific setup stuff here.
@@ -11,18 +12,20 @@ class MainStylesheet < ApplicationStylesheet
     st.background_color = color.bg_black
   end
 
-  def hello_world(st)
-    st.frame = {top: 100, width: 200, height: 18, centered: :horizontal}
-    st.text_alignment = :center
-    st.color = color.battleship_gray
-    st.font = font.medium
-    st.text = 'Hello World'
-  end
+  def collection_view(st)
+    st.view.contentInset = [60, 0, 0, 0]
+    st.background_color = color.bg_black
+    st.view.alwaysBounceVertical = true
 
-  def logout_btn(st)
-    standard_button st
-    st.frame = {t: 200, l: 20, fr:20, h: 45}
-    st.text = "Logout"
+    # st.view.collectionViewLayout.tap do |cl|
+    #   cl.invalidateLayout
+    #   # cl.itemSize = [cell_size[:w], cell_size[:h]]
+    #   # cl.scrollDirection = UICollectionViewScrollDirectionHorizontal
+    #   # cl.headerReferenceSize = [cell_size[:w], cell_size[:h]]
+    #   # cl.minimumInteritemSpacing = @margin
+    #   # cl.minimumLineSpacing = @margin
+    #   # cl.sectionInset = [15,15,15,15]
+    # end
   end
 
 end

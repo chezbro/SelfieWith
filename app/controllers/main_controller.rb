@@ -1,8 +1,19 @@
-class MainController < UIViewController
+class MainController < UICollectionViewController
+  SELFIE_CELL_ID = "SelfieCell"
+
+  def self.new(args = {})
+    # Set layout
+    # layout = UICollectionViewFlowLayout.alloc.init
+    layout = SelfieLayout.alloc.init
+    self.alloc.initWithCollectionViewLayout(layout)
+  end
 
   def viewDidLoad
     super
+    @selfies ||= []
     UIApplication.sharedApplication.delegate.get_contacts
+    load_data
+
     if AddressBook.authorized?
       ab = AddressBook::AddrBook.new
       ab.observe!
@@ -24,11 +35,41 @@ class MainController < UIViewController
     end
 
     # Create your UIViews here
-    @hello_world_label = rmq.append(UILabel, :hello_world).get
-    rmq.append(UIButton, :logout_btn).on(:tap) do |sender|
-      UIApplication.sharedApplication.delegate.logout
+    # @hello_world_label = rmq.append(UILabel, :hello_world).get
+    # rmq.append(UIButton, :logout_btn).on(:tap) do |sender|
+    #   UIApplication.sharedApplication.delegate.logout
+    # end
+
+    collectionView.tap do |cv|
+      cv.registerClass(SelfieCell, forCellWithReuseIdentifier: SELFIE_CELL_ID)
+      cv.delegate                      = self
+      cv.dataSource                    = self
+      cv.collectionViewLayout.delegate = self
+      rmq(cv).apply_style :collection_view
     end
+
+    # Refresh
+    @refresh_control = UIRefreshControl.alloc.init
+    @refresh_control.tintColor = rmq.color.white
+    @refresh_control.attributedTitle = NSAttributedString.alloc.initWithString("Pull to refresh", attributes: {NSForegroundColorAttributeName:UIColor.redColor})
+    @refresh_control.addTarget(self, action:'refreshView:', forControlEvents:UIControlEventValueChanged)
+    self.collectionView.addSubview(@refresh_control)
   end
+  def refreshView(refresh)
+    refresh.attributedTitle = NSAttributedString.alloc.initWithString("Refreshing data...", attributes: {NSForegroundColorAttributeName:UIColor.redColor})
+    UIApplication.sharedApplication.delegate.get_selfies do
+      refresh.attributedTitle = NSAttributedString.alloc.initWithString(sprintf("Last updated at %s", Time.now.strftime("%l:%M %p")), attributes: {NSForegroundColorAttributeName:UIColor.redColor})
+      load_data
+      refresh.endRefreshing
+    end
+
+    # if @refreshable_callback && self.respond_to?(@refreshable_callback)
+    #   self.send(@refreshable_callback)
+    # else
+    #   PM.logger.warn "You must implement the '#{@refreshable_callback}' method in your TableScreen."
+    # end
+  end
+
 
   def viewWillAppear(animated)
     UIApplication.sharedApplication.statusBarStyle = UIStatusBarStyleLightContent
@@ -45,6 +86,42 @@ class MainController < UIViewController
     end
   end
 
+  def load_data
+    UIApplication.sharedApplication.delegate.get_selfies do
+      @selfies = UIApplication.sharedApplication.delegate.selfies
+      collectionView.reloadData
+    end
+  end
+
+  def numberOfSectionsInCollectionView(view)
+    1
+  end
+  def collectionView(view, numberOfItemsInSection: section)
+    @selfies.length
+  end
+  def collectionView(view, cellForItemAtIndexPath: index_path)
+    view.dequeueReusableCellWithReuseIdentifier(SELFIE_CELL_ID, forIndexPath: index_path).tap do |cell|
+      rmq.build(cell) unless cell.reused
+    #   # p indexPath.row
+
+    #   # Update cell's data here
+      cell.update({
+        index: index_path.row.to_s ,
+        url: @selfies[index_path.row][:image]
+      })
+    end
+  end
+  def collectionView(view, didSelectItemAtIndexPath: index_path)
+    cell = view.cellForItemAtIndexPath(index_path)
+    SimpleSI.alert("Selected at section: #{index_path.section}, row: #{index_path.row}\n Should open the SelfieView controller, but still working on it")
+    # p @data[@sections[index_path.section]][index_path.row].uid
+    # self.navigationController.view.rmq(TopBar).animations.fade_out
+    # self.navigationController.setNavigationBarHidden(false, animated: true)
+    # a = SelfieViewController.new
+    # a.hidesBottomBarWhenPushed = true
+    # self.navigationController.pushViewController(a, animated:true)
+    puts "Selected at section: #{index_path.section}, row: #{index_path.row}"
+  end
 
   def init_nav
     self.navigationItem.tap do |nav|
