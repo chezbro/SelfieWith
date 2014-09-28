@@ -106,10 +106,7 @@ class MainController < UICollectionViewController
     #   # p indexPath.row
 
     #   # Update cell's data here
-      cell.update({
-        index: index_path.row.to_s ,
-        url: @selfies[index_path.row][:image]
-      })
+      cell.update(@selfies[index_path.row])
     end
   end
   def collectionView(view, didSelectItemAtIndexPath: index_path)
