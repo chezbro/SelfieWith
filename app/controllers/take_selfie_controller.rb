@@ -164,9 +164,11 @@ class TakeSelfieController < UIViewController
     rmq(:chose_contact_overlay).append(UIButton, :person_picker_done).animations.fade_in.on(:tap) do |sender|
       p person
       params={}
-      params[:name]   = person.composite_name
-      params[:phones] = person.phones.map {|p| p[:value]}
-      params[:email]  = person.email
+      params[:people] = []
+      params[:people] << {name: person.composite_name, phones: person.phones.map {|p| p[:value]}, email: person.email}
+      # params[:name]   = person.composite_name
+      # params[:phones] = person.phones.map {|p| p[:value]}
+      # params[:email]  = person.email
 
       data = UIImageJPEGRepresentation(@image_view.image, 1.0)
 
