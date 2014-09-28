@@ -20,7 +20,11 @@ class SelfieCell < UICollectionViewCell
   end
 
   def update(params)
-    @title.text = "  " + params[:name]
+    if params[:non_taker]
+      @title.text = "  Selfie with " + params[:non_taker][0][:name]
+    else
+      @title.text = "  "
+    end
     if url = params[:image]
       @image.url = url
     end

@@ -1,7 +1,7 @@
 module SelfieCellStylesheet
 
   def selfie_cell(st)
-    st.background_color    = color.random
+    st.background_color    = color.clear
     st.clips_to_bounds     = true
     st.layer.cornerRadius  = 4
     st.layer.masksToBounds = true
