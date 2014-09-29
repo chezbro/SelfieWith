@@ -74,6 +74,7 @@ class MainController < UICollectionViewController
 
   def viewWillAppear(animated)
     UIApplication.sharedApplication.statusBarStyle = UIStatusBarStyleLightContent
+    UIApplication.sharedApplication.setStatusBarHidden(false, withAnimation:UIStatusBarAnimationFade)
     self.navigationController.setNavigationBarHidden(true, animated: true)
     self.tabBarController.tabBar.frame = CGRectMake(0, UIScreen.mainScreen.bounds.size.height-80, UIScreen.mainScreen.bounds.size.width, 80)
     self.tabBarController.tabBar.subviews.first.frame = CGRectMake(0, 0, self.tabBarController.tabBar.frame.size.width, 80)

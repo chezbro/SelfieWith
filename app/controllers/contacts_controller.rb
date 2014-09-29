@@ -25,6 +25,7 @@ class ContactsController < UITableViewController
     tableView.reloadData
 
     UIApplication.sharedApplication.statusBarStyle = UIStatusBarStyleLightContent
+    UIApplication.sharedApplication.setStatusBarHidden(false, withAnimation:UIStatusBarAnimationFade)
     self.navigationController.setNavigationBarHidden(true, animated: true)
     self.tabBarController.tabBar.frame = CGRectMake(0, UIScreen.mainScreen.bounds.size.height-80, UIScreen.mainScreen.bounds.size.width, 80)
     # self.navigationController.view.rmq(TopBar).show
@@ -40,7 +41,7 @@ class ContactsController < UITableViewController
       end
     end
 
-    @data = @contacts.group_by {|c| c.composite_name[0] }
+    @data = @contacts.group_by {|c| c.composite_name.get_first }
     @sections = @data.keys
   end
 

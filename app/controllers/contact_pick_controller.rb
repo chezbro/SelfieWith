@@ -38,7 +38,7 @@ class ContactPickController < UITableViewController
       end
     end
 
-    @data = @contacts.group_by {|c| c.composite_name[0] }
+    @data = @contacts.group_by {|c| c.composite_name.get_first }
     @sections = @data.keys
   end
 
