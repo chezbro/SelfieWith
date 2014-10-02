@@ -117,5 +117,21 @@ module TopBarStylesheet
     st.frame = {fr:0, t:20, w: st.superview.size.width/3, h:60}
   end
 
+  def photos_view(st)
+    st.frame = {t:66, l: 0, w: st.superview.size.width/3, h: st.superview.size.height-66}
+  end
+  def likes_view(st)
+    st.frame = {t:66, fr: 0, w: st.superview.size.width/3, h: st.superview.size.height-66}
+  end
+  def photos_icon(st)
+    st.frame = {w:30, h:24, centered: :horizontal, t:15}
+    st.image = image.resource('photos_icon')
+  end
+  def likes_icon(st)
+    st.frame = {w:30, h:24, centered: :horizontal, t:15}
+    st.image = image.resource('like_icon')
+  end
+
+
 
 end

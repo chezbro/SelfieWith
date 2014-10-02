@@ -36,7 +36,7 @@ class TopBar < UIToolbar
                   @top_bar_label.text = "Settings"
                   o.find(:top_bar_back_btn, :top_bar_menu_btn).hide
                   o.find(:top_bar_menu_close_btn).show
-                  q.find(:avatar_view, :username_view).hide
+                  q.find(:avatar_view, :username_view, :photos_view, :likes_view).hide
                   q.find(:menu_view).show
                 }
               )
@@ -48,7 +48,7 @@ class TopBar < UIToolbar
                 animations: lambda{|q|
                   q.layout t:0, h: 200
                   @top_bar_label.text = "Your Profile"
-                  q.find(:avatar_view, :username_view).animations.fade_in
+                  q.find(:avatar_view, :username_view, :photos_view, :likes_view).animations.fade_in
                   q.find(:menu_view).hide
                 }
               )
@@ -64,6 +64,14 @@ class TopBar < UIToolbar
           @avatar.url = Auth.avatar
           @username = q.append(UILabel, :username_view).get
           @username.text = Auth.username
+
+          q.append(UIView, :photos_view).tap do |o|
+            o.append(UIImageView, :photos_icon)
+          end
+          q.append(UIView, :likes_view).tap do |o|
+            o.append(UIImageView, :likes_icon)
+          end
+
         },
         completion: -> (did_finish, q) {
         }
