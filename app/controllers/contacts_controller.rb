@@ -90,6 +90,7 @@ class ContactsController < UITableViewController
         ]
       })
     else
+      @invite_person = person
       SimpleSI.alert({
         title: "Invite #{person.composite_name}",
         message: "Invite your friends to use SefieWith.",
@@ -110,7 +111,17 @@ class ContactsController < UITableViewController
   end
 
   def send_invite
-    SimpleSI.alert("(This is fake for now) Hi, thank you for invite your friends to use SelfieWith.")
+    params={}
+    params[:phones] = @invite_person.phones.map {|p| p[:value]}
+
+    API.post("invite", params) do |result|
+      if result
+        rmq.animations.stop_spinner
+        SimpleSI.alert("Your invite had been send to \n #{@invite_person.composite_name}")
+      else
+        rmq.animations.stop_spinner
+      end
+    end
   end
 
   # Remove if you are only supporting portrait
