@@ -14,17 +14,31 @@ class SelfieViewController < UIViewController
     rmq(self.view).apply_style :root_view
 
     # Create your views here
-    # p @selfie
-    @selfie_image =
     @selfie_view = rmq.append(UIImageView, :selfie_view).get
-    @selfie_view.url = @selfie["image"]["url"]
+    # @selfie_view.url = @selfie["image"]["url"]
+    JMImageCache.sharedCache.imageForURL(@selfie["image"].to_url , completionBlock: lambda do |downloadedImage|
+        @selfie_view.image = downloadedImage
+        # @image.url = url
+    end)
+
+    rmq.append(UIButton, :like_btn).on(:touch) { like_selfie }
+    rmq.append(UIButton, :comment_btn).on(:touch) { comment_selfie }
+
 
     self.navigationItem.tap do |nav|
-      nav.rightBarButtonItem = UIBarButtonItem.alloc.initWithTitle("SelfieWith Chunlea",
+      nav.rightBarButtonItem = UIBarButtonItem.alloc.initWithTitle("SelfieWith #{@selfie[:non_taker][0][:name]}",
                                                                     style: UIBarButtonItemStylePlain,
                                                                     target: self, action: :goto_profile)
     end
 
+  end
+
+  def like_selfie
+    SimpleSI.alert("Need to do")
+  end
+
+  def comment_selfie
+    SimpleSI.alert("Need to do")
   end
 
   def goto_profile

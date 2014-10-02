@@ -76,6 +76,7 @@ class MainController < UICollectionViewController
     UIApplication.sharedApplication.statusBarStyle = UIStatusBarStyleLightContent
     UIApplication.sharedApplication.setStatusBarHidden(false, withAnimation:UIStatusBarAnimationFade)
     self.navigationController.setNavigationBarHidden(true, animated: true)
+    self.navigationController.view.rmq(TopBar).show
     self.tabBarController.tabBar.frame = CGRectMake(0, UIScreen.mainScreen.bounds.size.height-80, UIScreen.mainScreen.bounds.size.width, 80)
     self.tabBarController.tabBar.subviews.first.frame = CGRectMake(0, 0, self.tabBarController.tabBar.frame.size.width, 80)
     # self.navigationController.view.rmq(TopBar).show
@@ -112,14 +113,11 @@ class MainController < UICollectionViewController
   end
   def collectionView(view, didSelectItemAtIndexPath: index_path)
     cell = view.cellForItemAtIndexPath(index_path)
-    SimpleSI.alert("Selected at section: #{index_path.section}, row: #{index_path.row}\n Should open the SelfieView controller, but still working on it")
-    # p @data[@sections[index_path.section]][index_path.row].uid
-    # self.navigationController.view.rmq(TopBar).animations.fade_out
-    # self.navigationController.setNavigationBarHidden(false, animated: true)
-    # a = SelfieViewController.new
-    # a.hidesBottomBarWhenPushed = true
-    # self.navigationController.pushViewController(a, animated:true)
-    puts "Selected at section: #{index_path.section}, row: #{index_path.row}"
+    self.navigationController.view.rmq(TopBar).animations.fade_out
+    self.navigationController.setNavigationBarHidden(false, animated: true)
+    a = SelfieViewController.new(selfie: @selfies[index_path.row])
+    a.hidesBottomBarWhenPushed = true
+    self.navigationController.pushViewController(a, animated:true)
   end
 
   def init_nav
