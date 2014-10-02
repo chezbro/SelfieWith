@@ -5,7 +5,8 @@ module MenusCellStylesheet
 
   def menus_cell(st)
     # Style overall cell here
-    st.background_color = color.clear
+    st.background_color    = color.clear
+    st.view.selectionStyle = UITableViewCellSelectionStyleNone
   end
 
   def cell_label(st)

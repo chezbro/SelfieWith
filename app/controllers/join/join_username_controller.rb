@@ -264,7 +264,7 @@ class JoinUsernameController < UIViewController
           end
         else
           SimpleSI.alert({
-            title: "You new password is week",
+            title: "Your password is week",
             message: "You need a strong password, which at least 8 characters comprised of numbers, uppercase, and lowercase",
             transition: "bounce",
             buttons: [
