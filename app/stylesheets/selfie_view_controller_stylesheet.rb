@@ -1,0 +1,18 @@
+class SelfieViewControllerStylesheet < ApplicationStylesheet
+  # Add your view stylesheets here. You can then override styles if needed, example:
+  # include FooStylesheet
+
+  def setup
+    # Add stylesheet specific setup stuff here.
+    # Add application specific setup stuff in application_stylesheet.rb
+  end
+
+  def root_view(st)
+    st.background_color = color.black
+  end
+
+  def selfie_view(st)
+    st.frame = :full
+    st.view.contentMode = UIViewContentModeScaleAspectFit
+  end
+end
