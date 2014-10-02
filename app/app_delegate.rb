@@ -5,6 +5,13 @@ class AppDelegate
   def application(application, didFinishLaunchingWithOptions:launchOptions)
     @contacts ||= []
     @selfies  ||= []
+    if UIDevice.currentDevice.systemVersion.to_f >= 8.0
+      settings = UIUserNotificationSettings.settingsForTypes((UIRemoteNotificationTypeBadge |UIRemoteNotificationTypeSound |UIRemoteNotificationTypeAlert), categories:nil)
+      UIApplication.sharedApplication.registerUserNotificationSettings(settings)
+    else
+      UIApplication.sharedApplication.registerForRemoteNotificationTypes(UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound)
+    end
+
     UIApplication.sharedApplication.statusBarStyle = UIStatusBarStyleLightContent
     server
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
@@ -20,6 +27,36 @@ class AppDelegate
 
     @window.makeKeyAndVisible
     true
+  end
+
+  def application(application, didRegisterUserNotificationSettings: notificationSettings)
+    application.registerForRemoteNotifications
+  end
+
+  def application(application, handleActionWithIdentifier: identifier, forRemoteNotification: userInfo, completionHandler: completionHandler)
+    if identifier.isEqualToString("declineAction")
+      NSLog("declineAction")
+    elsif identifier.isEqualToString("answerAction")
+      NSLog("answerAction")
+    else
+      NSLog("application(application, handleActionWithIdentifier: identifier, forRemoteNotification: userInfo, completionHandler: completionHandler)")
+    end
+  end
+
+  def application(application, didRegisterForRemoteNotificationsWithDeviceToken: device_token)
+    if device_token
+      clean_token = device_token.description.gsub(" ", "").gsub("<", "").gsub(">", "")
+      App::Persistence["device_token"] = clean_token
+      NSLog("Token: %@", App::Persistence["device_token"])
+    end
+  end
+
+  def application(application, didReceiveRemoteNotification:push)
+    SimpleSI.alert(push['aps']['alert'])
+  end
+
+  def application(application, didFailToRegisterForRemoteNotificationsWithError: error)
+    NSLog(error.inspect)
   end
 
   def open_welcome_controller
