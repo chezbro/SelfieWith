@@ -26,7 +26,10 @@ class SelfieCell < UICollectionViewCell
       @title.text = "  "
     end
     if url = params[:image]
-      @image.url = url
+      JMImageCache.sharedCache.imageForURL(url.to_url , completionBlock: lambda do |downloadedImage|
+          @image.image = downloadedImage
+          # @image.url = url
+      end)
     end
     @like_count.text = "      " + params[:likes].to_s
     rmq(@like_count).reapply_styles

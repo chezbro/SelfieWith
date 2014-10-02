@@ -57,6 +57,10 @@ class TopBar < UIToolbar
             @top_bar_label = o.append(UILabel, :top_bar_label).get
           end
           @avatar = q.append(UIImageView, :avatar_view).get
+          # JMImageCache.sharedCache.imageForURL(Auth.avatar , completionBlock: lambda do |downloadedImage|
+          #     @avatar.image = downloadedImage
+          #     #@avatar.url = Auth.avatar
+          # end)
           @avatar.url = Auth.avatar
           @username = q.append(UILabel, :username_view).get
           @username.text = Auth.username
