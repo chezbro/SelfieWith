@@ -24,6 +24,7 @@ module ProfileTopBarStylesheet
     st.layer.borderColor   = color.white.CGColor
     st.layer.cornerRadius  = 32
     st.layer.masksToBounds = true
+    st.view.contentMode    = UIViewContentModeScaleAspectFill
   end
   def username(st)
     st.frame          = {t:22, l:60, fr:60, h: 44, centered: :horizontal}

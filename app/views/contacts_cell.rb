@@ -20,6 +20,8 @@ class ContactsCell < UITableViewCell
       JMImageCache.sharedCache.imageForURL(person.avatar.to_url , completionBlock: lambda do |downloadedImage|
           @image.image = downloadedImage
       end)
+    else
+      @image.image = rmq.image.resource('avatar')
     end
 
     if person.username

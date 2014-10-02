@@ -23,7 +23,7 @@ class TopBar < UIToolbar
                 animations: lambda{|q|
                   q.find(:user_info_view, :notification_view).show
                   q.layout t:0, h: 80
-                  q.find(:avatar_view, :username_view).animations.fade_out.remove
+                  q.find(:avatar_view, :username_view, :photos_view, :likes_view).animations.fade_out.remove
                   q.find(:menu_view).hide.remove
                 }
               )
