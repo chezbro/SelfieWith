@@ -220,7 +220,7 @@ class JoinUsernameController < UIViewController
                   form_data.appendPartWithFileData(data, name: "avatar", fileName:"avatar.jpg", mimeType: "image/jpeg")
                 end
               elsif result.success?
-                Auth.set(result.object[:user][:id], result.object[:user][:username], result.object[:user][:phone], result.object[:user][:full_name], result.object[:user][:gender], result.object[:user][:email], result.object[:user][:auth_token], result.object[:user][:avatar], result.object[:user][:confirmed_at])
+                Auth.set(result.object[:user][:id], result.object[:user][:username], result.object[:user][:phone], result.object[:user][:full_name], result.object[:user][:gender], result.object[:user][:email], result.object[:user][:auth_token], result.object[:user][:avatar_url], result.object[:user][:confirmed_at])
                 rmq.animations.stop_spinner
                 self.navigationController.pushViewController(JoinPhoneController.new(user: result.object["user"]), animated:true)
               elsif result.object && result.operation.response.statusCode.to_s =~ /40\d/

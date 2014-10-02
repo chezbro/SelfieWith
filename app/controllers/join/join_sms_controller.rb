@@ -107,7 +107,7 @@ class JoinSMSController < UIViewController
         if result
           p result
           rmq.animations.stop_spinner
-          Auth.set(result[:user][:id], result[:user][:username], result[:user][:phone], result[:user][:full_name], result[:user][:gender], result[:user][:email], result[:user][:auth_token], result[:user][:avatar], result[:user][:confirmed_at])
+          Auth.set(result[:user][:id], result[:user][:username], result[:user][:phone], result[:user][:full_name], result[:user][:gender], result[:user][:email], result[:user][:auth_token], result[:user][:avatar_url], result[:user][:confirmed_at])
           UIApplication.sharedApplication.delegate.open_main_controller
         else
           rmq.animations.stop_spinner

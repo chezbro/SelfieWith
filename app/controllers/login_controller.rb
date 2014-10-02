@@ -83,7 +83,7 @@ class LoginController < UIViewController
       API.post("auth/login", params) do |result|
         if result
           p result
-          Auth.set(result[:user][:id], result[:user][:username], result[:user][:phone], result[:user][:full_name], result[:user][:gender], result[:user][:email], result[:user][:auth_token], result[:user][:avatar], result[:user][:confirmed_at])
+          Auth.set(result[:user][:id], result[:user][:username], result[:user][:phone], result[:user][:full_name], result[:user][:gender], result[:user][:email], result[:user][:auth_token], result[:user][:avatar_url], result[:user][:confirmed_at])
           rmq.animations.stop_spinner
           if result["user"]["phone"]
             if result["user"]["confirmed_at"]
