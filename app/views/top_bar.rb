@@ -33,7 +33,7 @@ class TopBar < UIToolbar
                 duration: 0.3,
                 animations: lambda{|q|
                   q.layout t:0, fb: 0
-                  @top_bar_label.text = "Menu"
+                  @top_bar_label.text = "Settings"
                   o.find(:top_bar_back_btn, :top_bar_menu_btn).hide
                   o.find(:top_bar_menu_close_btn).show
                   q.find(:avatar_view, :username_view).hide
