@@ -28,8 +28,7 @@ class ContactsController < UITableViewController
     UIApplication.sharedApplication.setStatusBarHidden(false, withAnimation:UIStatusBarAnimationFade)
     self.navigationController.setNavigationBarHidden(true, animated: true)
     self.tabBarController.tabBar.frame = CGRectMake(0, UIScreen.mainScreen.bounds.size.height-80, UIScreen.mainScreen.bounds.size.width, 80)
-    # self.navigationController.view.rmq(TopBar).show
-    # self.navigationController.view.rmq(TopBar).show
+    self.navigationController.view.rmq(TopBar).show
   end
 
   def load_data
@@ -81,14 +80,19 @@ class ContactsController < UITableViewController
   def tableView(table_view, didSelectRowAtIndexPath:index_path)
     person = @data[@sections[index_path.section]][index_path.row]
     if person.username
-      SimpleSI.alert({
-        title: "TODO: Should open the profile screen",
-        message: "This person is #{person.composite_name} #{person.username.nil?? "You should invite him/her to join SelfieWith":"and in our database, his/her username is #{person.username}"}",
-        transition: "bounce",
-        buttons: [
-          {title: "Got it", type: "cancel"} # action is secondary
-        ]
-      })
+      self.navigationController.view.rmq(TopBar).animations.fade_out
+      self.navigationController.setNavigationBarHidden(false, animated: true)
+      a = ProfileController.new(person: person)
+      a.hidesBottomBarWhenPushed = true
+      self.navigationController.pushViewController(a, animated:true)
+      # SimpleSI.alert({
+      #   title: "TODO: Should open the profile screen",
+      #   message: "This person is #{person.composite_name} #{person.username.nil?? "You should invite him/her to join SelfieWith":"and in our database, his/her username is #{person.username}"}",
+      #   transition: "bounce",
+      #   buttons: [
+      #     {title: "Got it", type: "cancel"} # action is secondary
+      #   ]
+      # })
     else
       @invite_person = person
       SimpleSI.alert({
