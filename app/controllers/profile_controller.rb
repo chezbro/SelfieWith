@@ -33,9 +33,11 @@ class ProfileController < UICollectionViewController
     init_nav
     rmq(self.view).apply_style :root_view
 
-    rmq(self.navigationController.view).append(ProfileTopBar).get.tap do |top_bar|
+    @top_bar = rmq(self.navigationController.view).append(ProfileTopBar).get.tap do |top_bar|
       top_bar.delegate = self
     end
+
+    @top_bar.update(person: @person)
 
     # Create your UIViews here
     # @hello_world_label = rmq.append(UILabel, :hello_world).get
@@ -58,9 +60,6 @@ class ProfileController < UICollectionViewController
     @refresh_control.attributedTitle = NSAttributedString.alloc.initWithString("Pull to refresh", attributes: {NSForegroundColorAttributeName:UIColor.redColor})
     @refresh_control.addTarget(self, action:'refreshView:', forControlEvents:UIControlEventValueChanged)
     self.collectionView.addSubview(@refresh_control)
-
-    p "Here is person"
-    p @person
   end
   def refreshView(refresh)
     refresh.attributedTitle = NSAttributedString.alloc.initWithString("Refreshing data...", attributes: {NSForegroundColorAttributeName:UIColor.redColor})

@@ -17,8 +17,6 @@ class ProfileTopBar < UIToolbar
     end
 
     @username = q.append(UILabel, :username).get
-    @username.text = Auth.username
-
 
     q.append(UIButton, :take_selfie).on(:tap) do |sender|
       @delegate.take_selfie
@@ -26,10 +24,21 @@ class ProfileTopBar < UIToolbar
     q.append(UIButton, :back_btn).on(:tap) do |sender|
       @delegate.close
     end
-
   end
 
+  def update(params)
+    person = params[:person]
+    if person
+      @username.text = person.composite_name
+    end
+  end
+
+
   def rmq_appended
+    # if @delegate.person
+    #   @username.text = person.composite_name
+    # end
+
     # p @delegate
     # q = rmq(self)
     # q.apply_style :top_bar
@@ -41,6 +50,10 @@ class ProfileTopBar < UIToolbar
   def rmq_created
     # p "From created"
     # p @delegate
+    # if @delegate.person
+    #   @username.text = person.composite_name
+    # end
+
     # p "End created"
   end
 
