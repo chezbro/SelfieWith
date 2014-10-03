@@ -1,9 +1,10 @@
 class TakeSelfieController < UIViewController
-  attr_accessor :main_screen
+  attr_accessor :main_screen, :person
 
   def self.new(args = {})
     s = self.alloc
     s.main_screen = WeakRef.new(args[:main])
+    s.person = args[:person]
     s
   end
 
@@ -57,6 +58,9 @@ class TakeSelfieController < UIViewController
       end
       @person_name_label = rmq(:person_picker).append(UILabel, :person_name).get
       @person_name_label.text = "Pick person form your contacts"
+      if @person
+        update_person(@person)
+      end
     end
 
     @image_view = rmq.append(UIImageView, :image_view).get
@@ -183,7 +187,7 @@ class TakeSelfieController < UIViewController
           rmq.animations.stop_spinner
           UIApplication.sharedApplication.setStatusBarHidden(false, withAnimation:UIStatusBarAnimationFade)
           self.dismissViewControllerAnimated(true, completion:nil)
-          @main_screen.load_data
+          @main_screen.load_data if @main_screen
         elsif result.object && result.operation.response.statusCode.to_s =~ /401/
           UIApplication.sharedApplication.delegate.logout
           SimpleSI.alert("Your seesion are expired, please try relogin.")

@@ -147,7 +147,7 @@ class ProfileController < UICollectionViewController
 
   def take_selfie
     p "take!!"
-    @takeSelfie = TakeSelfieController.new
+    @takeSelfie = TakeSelfieController.new(person: @person)
     @takeSelfie.transitioningDelegate = self
     @takeSelfie.modalPresentationStyle = UIModalPresentationCustom
     p @takeSelfie
