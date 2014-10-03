@@ -223,6 +223,9 @@ class JoinUsernameController < UIViewController
                 Auth.set(result.object[:user][:id], result.object[:user][:username], result.object[:user][:phone], result.object[:user][:full_name], result.object[:user][:gender], result.object[:user][:email], result.object[:user][:auth_token], result.object[:user][:avatar_url], result.object[:user][:confirmed_at])
                 rmq.animations.stop_spinner
                 self.navigationController.pushViewController(JoinPhoneController.new(user: result.object["user"]), animated:true)
+              elsif result.object && result.operation.response.statusCode.to_s =~ /401/
+                UIApplication.sharedApplication.delegate.logout
+                SimpleSI.alert("Your seesion are expired, please try relogin.")
               elsif result.object && result.operation.response.statusCode.to_s =~ /40\d/
                 if result.object["message"].kind_of?(String)
                   error = result.object["message"].to_s

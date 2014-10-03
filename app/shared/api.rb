@@ -6,6 +6,9 @@ class API
         UIApplication.sharedApplication.networkActivityIndicatorVisible = false
         if result.success?
           block.call(result.object) if block
+        elsif result.object && result.operation.response.statusCode.to_s =~ /401/
+          UIApplication.sharedApplication.delegate.logout
+          SimpleSI.alert("Your seesion are expired, please try relogin.")
         elsif result.object && result.operation.response.statusCode.to_s =~ /40\d/
           error = "There is something wrong."
           if result.object["message"].kind_of?(String)
