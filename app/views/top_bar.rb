@@ -5,6 +5,24 @@ class TopBar < UIToolbar
     q = rmq(self)
     q.apply_style :top_bar
 
+    q.append(UIView, :photos_view).hide.tap do |o|
+      o.append(UIImageView, :photos_icon)
+      @total_selfies = o.append(UILabel, :total_selfies).get
+    end
+    q.append(UIView, :likes_view).hide.tap do |o|
+      o.append(UIImageView, :likes_icon)
+      @total_likes = o.append(UILabel, :total_likes).get
+    end
+    @avatar = q.append(UIImageView, :avatar_view).hide.get
+    # JMImageCache.sharedCache.imageForURL(Auth.avatar , completionBlock: lambda do |downloadedImage|
+    #     @avatar.image = downloadedImage
+    #     #@avatar.url = Auth.avatar
+    # end)
+    @avatar.url = Auth.avatar
+    @username = q.append(UILabel, :username_view).hide.get
+    @username.text = Auth.username
+
+
     q.append(UIButton, :user_info_view).on(:tap) do |sender|
       q.animate(
         duration: 0.5,
@@ -23,7 +41,8 @@ class TopBar < UIToolbar
                 animations: lambda{|q|
                   q.find(:user_info_view, :notification_view).show
                   q.layout t:0, h: 80
-                  q.find(:avatar_view, :username_view, :photos_view, :likes_view).animations.fade_out.remove
+                  q.find(:avatar_view, :username_view).animations.fade_out
+                  q.find(:photos_view, :likes_view).animations.fade_out
                   q.find(:menu_view).hide.remove
                 }
               )
@@ -56,22 +75,8 @@ class TopBar < UIToolbar
             end
             @top_bar_label = o.append(UILabel, :top_bar_label).get
           end
-          @avatar = q.append(UIImageView, :avatar_view).get
-          # JMImageCache.sharedCache.imageForURL(Auth.avatar , completionBlock: lambda do |downloadedImage|
-          #     @avatar.image = downloadedImage
-          #     #@avatar.url = Auth.avatar
-          # end)
-          @avatar.url = Auth.avatar
-          @username = q.append(UILabel, :username_view).get
-          @username.text = Auth.username
-
-          q.append(UIView, :photos_view).tap do |o|
-            o.append(UIImageView, :photos_icon)
-          end
-          q.append(UIView, :likes_view).tap do |o|
-            o.append(UIImageView, :likes_icon)
-          end
-
+          q.find(:avatar_view, :username_view).show
+          q.find(:photos_view, :likes_view).show
         },
         completion: -> (did_finish, q) {
         }
@@ -93,6 +98,11 @@ class TopBar < UIToolbar
     q.find(:notification_view).append(UIImageView, :notification_icon)
     @notification_count = q.find(:notification_view).append(UILabel, :notification_count).get
     @notification_count.text = "999"
+  end
+
+  def update(params)
+    @total_selfies.text = params[:total_selfies].to_s
+    @total_likes.text   = params[:total_likes].to_s
   end
 
   def rmq_appended

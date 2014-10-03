@@ -40,6 +40,18 @@ module ProfileTopBarStylesheet
     st.frame = {w:30, h:24, centered: :horizontal, t:15}
     st.image = image.resource('like_icon')
   end
+  def total_selfies(st)
+    st.frame          = {w:st.superview.size.width, h:24, centered: :horizontal, t:50}
+    st.text_alignment = :center
+    st.color          = color.white
+    # st.text         = "120"
+  end
+  def total_likes(st)
+    st.frame          = {w:st.superview.size.width, h:24, centered: :horizontal, t:50}
+    st.text_alignment = :center
+    st.color          = color.white
+    # st.text         = "120"
+  end
 
   def take_selfie(st)
     st.background_color = color.clear

@@ -184,6 +184,9 @@ class TakeSelfieController < UIViewController
           UIApplication.sharedApplication.setStatusBarHidden(false, withAnimation:UIStatusBarAnimationFade)
           self.dismissViewControllerAnimated(true, completion:nil)
           @main_screen.load_data
+        elsif result.object && result.operation.response.statusCode.to_s =~ /401/
+          UIApplication.sharedApplication.delegate.logout
+          SimpleSI.alert("Your seesion are expired, please try relogin.")
         elsif result.object && result.operation.response.statusCode.to_s =~ /40\d/
           if result.object["message"].kind_of?(String)
             error = result.object["message"].to_s

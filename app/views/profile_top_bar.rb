@@ -11,9 +11,11 @@ class ProfileTopBar < UIToolbar
     end
     q.append(UIView, :photos_view).tap do |o|
       o.append(UIImageView, :photos_icon)
+      @total_selfies = o.append(UILabel, :total_selfies).get
     end
     q.append(UIView, :likes_view).tap do |o|
       o.append(UIImageView, :likes_icon)
+      @total_likes = o.append(UILabel, :total_likes).get
     end
 
     @username = q.append(UILabel, :username).get
@@ -31,6 +33,8 @@ class ProfileTopBar < UIToolbar
     if person
       @username.text = person.composite_name
     end
+    @total_selfies.text = params[:total_selfies].to_s
+    @total_likes.text   = params[:total_likes].to_s
   end
 
 

@@ -95,8 +95,11 @@ class ProfileController < UICollectionViewController
   end
 
   def load_data
-    UIApplication.sharedApplication.delegate.get_selfies do
-      @selfies = UIApplication.sharedApplication.delegate.selfies
+    UIApplication.sharedApplication.delegate.get_selfies do |result|
+      @selfies       = result[:selfies]
+      @total_selfies = result[:total_selfies]
+      @total_likes   = result[:total_likes]
+      @top_bar.update({total_selfies: @total_selfies, total_likes: @total_likes})
       collectionView.reloadData
     end
   end

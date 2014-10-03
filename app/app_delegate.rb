@@ -176,8 +176,8 @@ class AppDelegate
       UIApplication.sharedApplication.networkActivityIndicatorVisible = false
       if result
         p result
-        @selfies = result
-        block.call if block
+        @selfies = result[:selfies]
+        block.call(result) if block
       else
       end
     end
