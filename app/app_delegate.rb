@@ -127,6 +127,7 @@ class AppDelegate
     end
   end
   def logout
+    AFMotion::Client.shared.operationQueue.cancelAllOperations
     Auth.reset
     open_welcome_controller
   end

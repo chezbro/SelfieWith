@@ -7,7 +7,8 @@ class ProfileTopBar < UIToolbar
 
     q.append(UIView, :avatar_view).tap do |o|
       @avatar = o.append(UIImageView, :avatar).get
-      @avatar.url = Auth.avatar
+      # @avatar.url = Auth.avatar
+      @avatar.image = rmq.image.resource('avatar')
     end
     q.append(UIView, :photos_view).tap do |o|
       o.append(UIImageView, :photos_icon)
@@ -32,6 +33,15 @@ class ProfileTopBar < UIToolbar
     person = params[:person]
     if person
       @username.text = person.composite_name
+      if person.photo
+        @avatar.image = UIImage.alloc.initWithData(person.photo)
+      elsif person.avatar
+        JMImageCache.sharedCache.imageForURL(person.avatar.to_url , completionBlock: lambda do |downloadedImage|
+            @avatar.image = downloadedImage
+        end)
+      else
+        @avatar.image = rmq.image.resource('avatar')
+      end
     end
     @total_selfies.text = params[:total_selfies].to_s
     @total_likes.text   = params[:total_likes].to_s
