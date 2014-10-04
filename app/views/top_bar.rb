@@ -22,6 +22,18 @@ class TopBar < UIToolbar
     @username = q.append(UILabel, :username_view).hide.get
     @username.text = Auth.username
 
+    q.append(UIButton, :close_notification_list).hide.on(:tap) do |sender|
+      q.animate(
+        duration: 0.3,
+        animations: lambda{|q|
+          q.find(:close_notification_list).animations.fade_out
+          q.find(:notification_view).animations.fade_in
+          q.layout t:0, h: 80
+          q.find(:notification_list).hide.remove
+        }
+      )
+    end
+
 
     q.append(UIButton, :user_info_view).on(:tap) do |sender|
       q.animate(
@@ -89,7 +101,19 @@ class TopBar < UIToolbar
       # end
     end
     q.append(UIButton, :notification_view).on(:tap) do |sender|
-      SimpleSI.alert("Notification")
+      # SimpleSI.alert("Notification")
+      q.animate(
+        duration: 0.5,
+        animations: -> (q) {
+          q.layout t:0, fb: 0
+          @notifications = NotificationsController.new
+          q.append(@notifications.view, :notification_list)
+          q.find(:notification_view).hide
+          q.find(:close_notification_list).show
+        },
+        completion: -> (did_finish, q) {
+        }
+      )
     end
     @avatar = q.find(:user_info_view).append(UIImageView, :avatar).get
     @avatar.url = Auth.avatar

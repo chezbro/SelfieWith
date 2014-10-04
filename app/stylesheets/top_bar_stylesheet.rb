@@ -16,6 +16,15 @@ module TopBarStylesheet
     st.background_color = color.clear
     st.frame = {fr:0, t:20, w: st.superview.size.width/3, h:60}
   end
+  def notification_list(st)
+    st.frame = {l:0, t:88, fb:0, fr:0}
+  end
+  def close_notification_list(st)
+    st.frame = {fr:0, t:20, w: st.superview.size.width/3, h:60}
+    # st.text = " Close"
+    st.color = color.nav_text
+    st.image = image.resource('close_btn')
+  end
 
   def navigation_bar(st)
     st.frame = {t:20, l:0, fr:0, h:44}
