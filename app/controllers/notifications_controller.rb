@@ -17,11 +17,18 @@ class NotificationsController < UITableViewController
   end
 
   def load_data
-    @data = 0.upto(rand(100)).map do |i| # Test data
-      {
-        name: %w(Lorem ipsum dolor sit amet consectetur adipisicing elit sed).sample,
-        num: rand(100),
-      }
+    @data ||= []
+    UIApplication.sharedApplication.networkActivityIndicatorVisible = true
+
+    params = {}
+    API.get('notifications', params) do |result|
+      UIApplication.sharedApplication.networkActivityIndicatorVisible = false
+      if result
+        p result
+        @data = result
+        tableView.reloadData
+      else
+      end
     end
   end
 
@@ -51,15 +58,29 @@ class NotificationsController < UITableViewController
   def deny_notification(sender)
     indexPath = tableView.indexPathForCell(sender.superview.superview.superview)
     tableView.beginUpdates
-    @data.delete_at(indexPath.row)
-    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimationLeft)
+    API.post('notifications/deny', {id: @data[indexPath.row][:id]}) do |result|
+      UIApplication.sharedApplication.networkActivityIndicatorVisible = false
+      if result
+        @data.delete_at(indexPath.row)
+        tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimationLeft)
+        App::Persistence["notification"] -= 1
+      else
+      end
+    end
     tableView.endUpdates
   end
-  def accpet_notification(sender)
+  def accept_notification(sender)
     indexPath = tableView.indexPathForCell(sender.superview.superview.superview)
     tableView.beginUpdates
-    @data.delete_at(indexPath.row)
-    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimationMiddle)
+    API.post('notifications/accept', {id: @data[indexPath.row][:id]}) do |result|
+      UIApplication.sharedApplication.networkActivityIndicatorVisible = false
+      if result
+        @data.delete_at(indexPath.row)
+        tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimationMiddle)
+        App::Persistence["notification"] -= 1
+      else
+      end
+    end
     tableView.endUpdates
   end
 

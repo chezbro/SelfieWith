@@ -30,6 +30,9 @@ class TopBar < UIToolbar
           q.find(:notification_view).animations.fade_in
           q.layout t:0, h: 80
           q.find(:notification_list).hide.remove
+          if App::Persistence["notification"]
+            update_notification(App::Persistence["notification"])
+          end
         }
       )
     end
@@ -127,10 +130,14 @@ class TopBar < UIToolbar
   def update(params)
     @total_selfies.text      = params[:total_selfies].to_s
     @total_likes.text        = params[:total_likes].to_s
-    if params[:notification].to_i > 99
+    update_notification(params[:notification])
+  end
+
+  def update_notification(count)
+    if count.to_i > 99
       @notification_count.text = "99+"
     else
-      @notification_count.text = params[:notification].to_s
+      @notification_count.text = count.to_i.to_s
     end
   end
 

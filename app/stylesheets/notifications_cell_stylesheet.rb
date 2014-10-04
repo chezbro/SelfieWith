@@ -34,10 +34,13 @@ module NotificationsCellStylesheet
       l.shadowOffset  = [1.0, 2.0]
     end
   end
+  def btn_bg(st)
+    st.frame = {fb:0, l:0, fr:0, h:25}
+  end
 
   def background_image(st)
     st.frame = {w: st.superview.size.width, h: st.superview.size.height, centered: :both}
-    st.image = image.resource('icon-512')
+    # st.image = image.resource('icon-512')
     st.view.contentMode = UIViewContentModeScaleAspectFill
     st.layer.masksToBounds = true
     st.corner_radius = 4
@@ -46,7 +49,7 @@ module NotificationsCellStylesheet
   def deny_btn(st)
     st.frame = {fb:0, h:30, w: st.superview.size.width/2, l: 0}
     st.color = color.white
-    st.background_color = color.red
+    # st.background_color = color.red
     st.text = "Deny"
     st.view.layer.tap do |l|
       l.shadowColor = color.black.CGColor
@@ -60,7 +63,7 @@ module NotificationsCellStylesheet
     st.frame = {fb:0, h:30, w: st.superview.size.width/2, fr: 0}
     st.color = color.white
     st.text = "Accept"
-    st.background_color = color.blue
+    # st.background_color = color.blue
     st.view.layer.tap do |l|
       l.shadowColor = color.black.CGColor
       l.shadowOpacity = 0.2

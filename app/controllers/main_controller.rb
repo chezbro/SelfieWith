@@ -73,6 +73,7 @@ class MainController < UICollectionViewController
 
 
   def viewWillAppear(animated)
+    @top_bar.update_notification(App::Persistence["notification"])
     UIApplication.sharedApplication.statusBarStyle = UIStatusBarStyleLightContent
     UIApplication.sharedApplication.setStatusBarHidden(false, withAnimation:UIStatusBarAnimationFade)
     self.navigationController.setNavigationBarHidden(true, animated: true)
