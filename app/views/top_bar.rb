@@ -97,12 +97,17 @@ class TopBar < UIToolbar
     @username.text = Auth.username
     q.find(:notification_view).append(UIImageView, :notification_icon)
     @notification_count = q.find(:notification_view).append(UILabel, :notification_count).get
-    @notification_count.text = "999"
+
   end
 
   def update(params)
-    @total_selfies.text = params[:total_selfies].to_s
-    @total_likes.text   = params[:total_likes].to_s
+    @total_selfies.text      = params[:total_selfies].to_s
+    @total_likes.text        = params[:total_likes].to_s
+    if params[:notification].to_i > 99
+      @notification_count.text = "99+"
+    else
+      @notification_count.text = params[:notification].to_s
+    end
   end
 
   def rmq_appended

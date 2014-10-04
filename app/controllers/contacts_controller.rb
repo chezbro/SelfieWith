@@ -8,7 +8,7 @@ class ContactsController < UITableViewController
     rmq.stylesheet = ContactsControllerStylesheet
     rmq(self.view).apply_style :root_view
 
-    rmq(self.navigationController.view).append(TopBar).get.tap do |top_bar|
+    @top_bar = rmq(self.navigationController.view).append(TopBar).get.tap do |top_bar|
       top_bar.delegate = self
     end
 
@@ -21,6 +21,7 @@ class ContactsController < UITableViewController
   end
 
   def viewWillAppear(animated)
+    @top_bar.update({total_selfies: App::Persistence["total_selfies"], total_likes: App::Persistence["total_likes"], notification: App::Persistence["notification"]})
     load_data
     tableView.reloadData
 
@@ -34,7 +35,7 @@ class ContactsController < UITableViewController
   def load_data
     @contacts = UIApplication.sharedApplication.delegate.contacts
     if @contacts.empty?
-      UIApplication.sharedApplication.delegate.get_contacts do
+      UIApplication.sharedApplication.delegate.get_contacts do |result|
         load_data
         tableView.reloadData
       end
