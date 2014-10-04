@@ -7,10 +7,12 @@ class SelfieCell < UICollectionViewCell
       @image      = q.append(UIImageView, :image).get
       @title      = q.append(UILabel, :title).get.tap do |o|
         gradient = CAGradientLayer.layer
-        gradient.frame = o.bounds
+        # gradient.frame = o.bounds
+        gradient.frame = CGRectMake(0, 0, rmq.app.window.size.width, 25)
         gradient.colors = [rmq.color.from_rgba(0, 0, 0, 0.9).CGColor, rmq.color.from_rgba(0, 0, 0, 0).CGColor]
         gradient.locations = [0, 0.8]
-        o.layer.addSublayer(gradient)
+        # o.layer.addSublayer(gradient)
+        o.layer.insertSublayer(gradient, atIndex:0)
       end
       @like_count = q.append(UILabel, :like_count).get
       rmq(@like_count).append(UIImageView, :like_icon)
