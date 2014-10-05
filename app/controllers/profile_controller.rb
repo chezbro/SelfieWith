@@ -131,9 +131,7 @@ class ProfileController < UICollectionViewController
   def collectionView(view, cellForItemAtIndexPath: index_path)
     view.dequeueReusableCellWithReuseIdentifier(SELFIE_CELL_ID, forIndexPath: index_path).tap do |cell|
       rmq.build(cell) unless cell.reused
-    #   # p indexPath.row
-
-    #   # Update cell's data here
+      rmq(:like_count).reapply_styles
       cell.update(@selfies[index_path.row])
     end
   end
