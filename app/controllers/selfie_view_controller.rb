@@ -23,6 +23,18 @@ class SelfieViewController < UIViewController
 
     rmq.append(UIButton, :like_btn).on(:touch) { like_selfie }
     rmq.append(UIButton, :comment_btn).on(:touch) { comment_selfie }
+    @like_btn = rmq(:like_btn).get
+
+    if @selfie["like"]
+      @like_btn.setImage(rmq.image.resource('heart_like'), forState:UIControlStateNormal)
+      @like_btn.setTitle("  Unlike", forState:UIControlStateNormal)
+    else
+      @like_btn.setImage(rmq.image.resource('heart_unlike'), forState:UIControlStateNormal)
+      @like_btn.setTitle("  Like", forState:UIControlStateNormal)
+    end
+    if @selfie["status"] == "pendding"
+      rmq(:like_btn, :comment_btn).hide
+    end
 
 
     self.navigationItem.tap do |nav|
@@ -34,7 +46,23 @@ class SelfieViewController < UIViewController
   end
 
   def like_selfie
-    SimpleSI.alert("Need to do")
+    # SimpleSI.alert("Need to do")
+    UIApplication.sharedApplication.networkActivityIndicatorVisible = true
+
+    params = {selfie: @selfie[:id]}
+    API.post('like', params) do |result|
+      UIApplication.sharedApplication.networkActivityIndicatorVisible = false
+      if result
+        if result[:action] == "like"
+          @like_btn.setImage(rmq.image.resource('heart_like'), forState:UIControlStateNormal)
+          @like_btn.setTitle("  Unlike", forState:UIControlStateNormal)
+        else
+          @like_btn.setImage(rmq.image.resource('heart_unlike'), forState:UIControlStateNormal)
+          @like_btn.setTitle("  Like", forState:UIControlStateNormal)
+        end
+      else
+      end
+    end
   end
 
   def comment_selfie
