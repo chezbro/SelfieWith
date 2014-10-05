@@ -26,8 +26,7 @@ class SelfieViewController < UIViewController
 
 
     self.navigationItem.tap do |nav|
-      # IF there is no non_taker, the app will crash
-      nav.rightBarButtonItem = UIBarButtonItem.alloc.initWithTitle("SelfieWith #{@selfie[:non_taker][0][:name]}",
+      nav.rightBarButtonItem = UIBarButtonItem.alloc.initWithTitle("SelfieWith #{@selfie[:non_taker_names] if @selfie}",
                                                                     style: UIBarButtonItemStylePlain,
                                                                     target: self, action: :goto_profile)
     end

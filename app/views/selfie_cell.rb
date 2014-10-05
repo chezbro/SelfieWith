@@ -22,9 +22,9 @@ class SelfieCell < UICollectionViewCell
   end
 
   def update(params)
-    if params[:non_taker]
+    if params[:non_taker_names]
       # @title.text = "  Selfie with " + params[:non_taker][0][:name]
-      @title.text = "  Selfie with # Bug here"
+      @title.text = "  SelfieWith #{params[:non_taker_names]}"
     else
       @title.text = "  "
     end
