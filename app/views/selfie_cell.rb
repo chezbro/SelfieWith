@@ -4,8 +4,9 @@ class SelfieCell < UICollectionViewCell
   def rmq_build
     rmq(self).apply_style :selfie_cell
     rmq(self.contentView).tap do |q|
-      @image      = q.append(UIImageView, :image).get
-      @title      = q.append(UILabel, :title).get.tap do |o|
+      @image        = q.append(UIImageView, :image).get
+      @pedding_icon = q.append(UIImageView, :pedding_icon).hide.get
+      @title        = q.append(UILabel, :title).get.tap do |o|
         gradient = CAGradientLayer.layer
         # gradient.frame = o.bounds
         gradient.frame = CGRectMake(0, 0, rmq.app.window.size.width, 25)
@@ -16,6 +17,7 @@ class SelfieCell < UICollectionViewCell
       end
       @like_count = q.append(UILabel, :like_count).get
       rmq(@like_count).append(UIImageView, :like_icon)
+      # @pedding_icon = q.append(UIImageView, :pedding_icon).get
       # @like_count = q.append(UIButton, :like_count).get
     end
 
@@ -38,8 +40,14 @@ class SelfieCell < UICollectionViewCell
           # @image.url = url
       end)
     end
-    @like_count.text = "      " + params[:likes].to_s
-    rmq(@like_count).reapply_styles
+    if params[:status] == "pendding"
+      rmq(@like_count).hide
+      rmq(@pedding_icon).show.reapply_styles
+    else
+      @like_count.text = "      " + params[:likes].to_s
+      rmq(@like_count).show.reapply_styles
+      rmq(@pedding_icon).hide
+    end
   end
 
   def layoutSubviews
@@ -47,6 +55,7 @@ class SelfieCell < UICollectionViewCell
     rmq(@like_count).reapply_styles
     rmq(@image).reapply_styles
     rmq(@title).reapply_styles
+    rmq(@pedding_icon).reapply_styles
   end
 
   def prepareForReuse

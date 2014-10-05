@@ -63,17 +63,13 @@ class ProfileController < UICollectionViewController
   end
   def refreshView(refresh)
     refresh.attributedTitle = NSAttributedString.alloc.initWithString("Refreshing data...", attributes: {NSForegroundColorAttributeName:UIColor.redColor})
-    UIApplication.sharedApplication.delegate.get_selfies do
+    get_selfies do |result|
       refresh.attributedTitle = NSAttributedString.alloc.initWithString(sprintf("Last updated at %s", Time.now.strftime("%l:%M %p")), attributes: {NSForegroundColorAttributeName:UIColor.redColor})
-      load_data
+      if result
+        update_table(result)
+      end
       refresh.endRefreshing
     end
-
-    # if @refreshable_callback && self.respond_to?(@refreshable_callback)
-    #   self.send(@refreshable_callback)
-    # else
-    #   PM.logger.warn "You must implement the '#{@refreshable_callback}' method in your TableScreen."
-    # end
   end
 
 
@@ -95,14 +91,36 @@ class ProfileController < UICollectionViewController
   end
 
   def load_data
-    UIApplication.sharedApplication.delegate.get_selfies do |result|
-      @selfies       = result[:selfies]
-      @total_selfies = result[:total_selfies]
-      @total_likes   = result[:total_likes]
-      @top_bar.update({total_selfies: @total_selfies, total_likes: @total_likes})
-      collectionView.reloadData
+    get_selfies do |result|
+      if result
+        update_table(result)
+      end
     end
   end
+
+  def update_table(result)
+    @selfies       = result[:selfies]
+    @total_selfies = result[:total_selfies]
+    @total_likes   = result[:total_likes]
+    @top_bar.update({total_selfies: @total_selfies, total_likes: @total_likes})
+    collectionView.reloadData
+  end
+  def get_selfies(&block)
+    UIApplication.sharedApplication.networkActivityIndicatorVisible = true
+
+    params = {username: @person.username}
+    API.post('selfies', params) do |result|
+      UIApplication.sharedApplication.networkActivityIndicatorVisible = false
+      if result
+        p result
+        @selfies = result[:selfies]
+        block.call(result) if block
+      else
+        block.call(nil) if block
+      end
+    end
+  end
+
 
   def numberOfSectionsInCollectionView(view)
     1

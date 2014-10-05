@@ -127,8 +127,9 @@ class AppDelegate
     end
   end
   def logout
-    AFMotion::Client.shared.operationQueue.cancelAllOperations
+    # AFMotion::Client.shared.operationQueue.cancelAllOperations
     Auth.reset
+    UIApplication.sharedApplication.setApplicationIconBadgeNumber(0)
     open_welcome_controller
   end
 
@@ -174,7 +175,7 @@ class AppDelegate
     UIApplication.sharedApplication.networkActivityIndicatorVisible = true
 
     params = {}
-    API.post('selfies', params) do |result|
+    API.get('selfies', params) do |result|
       UIApplication.sharedApplication.networkActivityIndicatorVisible = false
       if result
         p result

@@ -52,4 +52,9 @@ module SelfieCellStylesheet
       l.shadowOffset  = [1.0, 2.0]
     end
   end
+  def pedding_icon(st)
+    st.frame            = {fb:0, l:0, w: 30, h:30}
+    # st.view.contentMode = UIViewContentModeScaleAspectFit
+    st.image            = image.resource('pendding')
+  end
 end
