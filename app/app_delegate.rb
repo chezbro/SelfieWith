@@ -163,8 +163,9 @@ class AppDelegate
             end
             @contacts << person
           end
-          block.call if block
+          block.call(result) if block
         else
+          block.call(nil) if block
         end
       end
     end
@@ -180,6 +181,7 @@ class AppDelegate
         @selfies = result[:selfies]
         block.call(result) if block
       else
+        block.call(nil) if block
       end
     end
   end

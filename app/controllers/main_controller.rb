@@ -58,9 +58,11 @@ class MainController < UICollectionViewController
   end
   def refreshView(refresh)
     refresh.attributedTitle = NSAttributedString.alloc.initWithString("Refreshing data...", attributes: {NSForegroundColorAttributeName:UIColor.redColor})
-    UIApplication.sharedApplication.delegate.get_selfies do
+    UIApplication.sharedApplication.delegate.get_selfies do |result|
       refresh.attributedTitle = NSAttributedString.alloc.initWithString(sprintf("Last updated at %s", Time.now.strftime("%l:%M %p")), attributes: {NSForegroundColorAttributeName:UIColor.redColor})
-      load_data
+      if result
+        load_data
+      end
       refresh.endRefreshing
     end
 
@@ -93,12 +95,14 @@ class MainController < UICollectionViewController
   def load_data
     UIApplication.sharedApplication.delegate.get_selfies do |result|
       # @selfies = UIApplication.sharedApplication.delegate.selfies
-      @selfies       = result[:selfies]
-      App::Persistence["total_selfies"] = result[:total_selfies]
-      App::Persistence["total_likes"]   = result[:total_likes]
-      App::Persistence["notification"]  = result[:notification]
-      @top_bar.update({total_selfies: App::Persistence["total_selfies"], total_likes: App::Persistence["total_likes"], notification: App::Persistence["notification"]})
-      collectionView.reloadData
+      if result
+        @selfies       = result[:selfies]
+        App::Persistence["total_selfies"] = result[:total_selfies]
+        App::Persistence["total_likes"]   = result[:total_likes]
+        App::Persistence["notification"]  = result[:notification]
+        @top_bar.update({total_selfies: App::Persistence["total_selfies"], total_likes: App::Persistence["total_likes"], notification: App::Persistence["notification"]})
+        collectionView.reloadData
+      end
     end
   end
 

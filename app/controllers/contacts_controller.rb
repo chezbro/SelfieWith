@@ -36,7 +36,9 @@ class ContactsController < UITableViewController
     @contacts = UIApplication.sharedApplication.delegate.contacts
     if @contacts.empty?
       UIApplication.sharedApplication.delegate.get_contacts do |result|
-        load_data
+        if result
+          load_data
+        end
         tableView.reloadData
       end
     end

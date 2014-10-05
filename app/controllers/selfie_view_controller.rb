@@ -26,6 +26,7 @@ class SelfieViewController < UIViewController
 
 
     self.navigationItem.tap do |nav|
+      # IF there is no non_taker, the app will crash
       nav.rightBarButtonItem = UIBarButtonItem.alloc.initWithTitle("SelfieWith #{@selfie[:non_taker][0][:name]}",
                                                                     style: UIBarButtonItemStylePlain,
                                                                     target: self, action: :goto_profile)
@@ -42,7 +43,7 @@ class SelfieViewController < UIViewController
   end
 
   def goto_profile
-    SimpleSI.alert("Will open the profile screen, or send invite to hime")
+    # SimpleSI.alert("Will open the profile screen, or send invite to hime")
   end
 
   # Remove if you are only supporting portrait
