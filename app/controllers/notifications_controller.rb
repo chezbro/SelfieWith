@@ -64,6 +64,7 @@ class NotificationsController < UITableViewController
         @data.delete_at(indexPath.row)
         tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimationLeft)
         App::Persistence["notification"] -= 1
+        UIApplication.sharedApplication.setApplicationIconBadgeNumber(App::Persistence["notification"].to_i)
       else
       end
     end
@@ -78,6 +79,7 @@ class NotificationsController < UITableViewController
         @data.delete_at(indexPath.row)
         tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimationMiddle)
         App::Persistence["notification"] -= 1
+        UIApplication.sharedApplication.setApplicationIconBadgeNumber(App::Persistence["notification"].to_i)
       else
       end
     end

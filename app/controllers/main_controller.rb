@@ -107,6 +107,7 @@ class MainController < UICollectionViewController
     App::Persistence["total_likes"]   = result[:total_likes]
     App::Persistence["notification"]  = result[:notification]
     @top_bar.update({total_selfies: App::Persistence["total_selfies"], total_likes: App::Persistence["total_likes"], notification: App::Persistence["notification"]})
+    UIApplication.sharedApplication.setApplicationIconBadgeNumber(App::Persistence["notification"].to_i)
     collectionView.reloadData
   end
 
