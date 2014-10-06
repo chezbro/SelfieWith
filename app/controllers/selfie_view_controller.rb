@@ -22,7 +22,7 @@ class SelfieViewController < UIViewController
     end)
 
     rmq.append(UIButton, :like_btn).on(:touch) { like_selfie }
-    rmq.append(UIButton, :comment_btn).on(:touch) { comment_selfie }
+    rmq.append(UIButton, :comment_btn).hide.on(:touch) { comment_selfie }
     @like_btn = rmq(:like_btn).get
 
     if @selfie["like"]

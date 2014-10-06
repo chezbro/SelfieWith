@@ -18,7 +18,7 @@ class SelfieViewControllerStylesheet < ApplicationStylesheet
 
   def like_btn(st)
     standard_button st
-    st.frame = {l:10, fb:10, w:(st.superview.size.width-30)/2, h: 40}
+    st.frame = {l:10, fb:10, w:(st.superview.size.width-20), h: 40}
     st.text  = "  Like"
     st.image = image.resource('heart_unlike')
   end
