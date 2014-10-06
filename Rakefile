@@ -10,7 +10,7 @@ Motion::Project::App.setup do |app|
 
   app.name = 'SelfieWith'
   app.identifier = 'com.chunlea.selfiewith'
-  app.short_version = '0.0.1'
+  app.short_version = '0.0.2'
   app.version = app.short_version
   app.info_plist['UIViewControllerBasedStatusBarAppearance'] = false
   app.status_bar_style = :light_content
@@ -56,10 +56,17 @@ Motion::Project::App.setup do |app|
     pod 'JMImageCache'
   end
 
+  app.release do
+    app.codesign_certificate                = 'iPhone Distribution: Chunlea Ju (49C9G223DL)'
+    app.provisioning_profile                = './SelfieWithDistribution.mobileprovision'
+    app.entitlements['aps-environment']     = 'production'
+    app.entitlements['get-task-allow']      = true
+    app.entitlements['beta-reports-active'] = true
+  end
   app.development do
-    app.codesign_certificate = 'iPhone Developer: Chunlea Ju (XR5287VPL6)'
-    app.provisioning_profile = './SelfieWithDevelopment.mobileprovision'
+    app.codesign_certificate            = 'iPhone Developer: Chunlea Ju (XR5287VPL6)'
+    app.provisioning_profile            = './SelfieWithDevelopment.mobileprovision'
     app.entitlements['aps-environment'] = 'development'
-    app.entitlements['get-task-allow'] = true
+    app.entitlements['get-task-allow']  = true
   end
 end
