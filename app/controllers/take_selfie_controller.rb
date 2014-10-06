@@ -162,7 +162,26 @@ class TakeSelfieController < UIViewController
       # sender.setTitle('Rear Camera', forState: UIControlStateNormal)
     end
   end
+  def scaleImage(image)
+    if image.size.width < 1080
+      newimg = image
+    else
+      scaleBy = 1080.0/image.size.width
+      size = CGSizeMake(image.size.width * scaleBy, image.size.height * scaleBy)
 
+      UIGraphicsBeginImageContext(size)
+      context = UIGraphicsGetCurrentContext()
+      transform = CGAffineTransformIdentity
+
+      transform = CGAffineTransformScale(transform, scaleBy, scaleBy)
+      CGContextConcatCTM(context, transform)
+
+      image.drawAtPoint(CGPointMake(0, 0))
+      newimg = UIGraphicsGetImageFromCurrentImageContext()
+      UIGraphicsEndImageContext()
+    end
+    UIImageJPEGRepresentation(newimg, 0.8)
+  end
   def update_person(person)
     @person_name_label.text = person.composite_name
     rmq(:chose_contact_overlay).append(UIButton, :person_picker_done).animations.fade_in.on(:tap) do |sender|
@@ -174,9 +193,11 @@ class TakeSelfieController < UIViewController
       # params[:phones] = person.phones.map {|p| p[:value]}
       # params[:email]  = person.email
 
-      data = UIImageJPEGRepresentation(@image_view.image, 1.0)
+      data = scaleImage(@image_view.image)
 
       UIApplication.sharedApplication.networkActivityIndicatorVisible = true
+      self.dismissViewControllerAnimated(true, completion:nil)
+      UIApplication.sharedApplication.setStatusBarHidden(false, withAnimation:UIStatusBarAnimationFade)
       AFMotion::Client.shared.multipart_post("upload", params) do |result, form_data|
         UIApplication.sharedApplication.networkActivityIndicatorVisible = false
         if form_data
@@ -185,8 +206,6 @@ class TakeSelfieController < UIViewController
           end
         elsif result.success?
           rmq.animations.stop_spinner
-          UIApplication.sharedApplication.setStatusBarHidden(false, withAnimation:UIStatusBarAnimationFade)
-          self.dismissViewControllerAnimated(true, completion:nil)
           @main_screen.load_data if @main_screen
         elsif result.object && result.operation.response.statusCode.to_s =~ /401/
           UIApplication.sharedApplication.delegate.logout
