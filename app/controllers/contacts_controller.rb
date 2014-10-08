@@ -43,7 +43,7 @@ class ContactsController < UITableViewController
       end
     end
 
-    @data = @contacts.group_by {|c| c.composite_name.get_first }
+    @data = @contacts.group_by {|c| (c.composite_name || "#").get_first }
     @sections = @data.keys
   end
 

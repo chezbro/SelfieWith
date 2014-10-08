@@ -32,13 +32,13 @@ class ContactPickController < UITableViewController
 
   def load_data
     @contacts = []
-    @ab.people{|p| p.composite_name}.map do |contact|
+    @ab.people{|p| (p.composite_name || "#")}.map do |contact|
       unless contact.organization?
         @contacts << contact
       end
     end
 
-    @data = @contacts.group_by {|c| c.composite_name.get_first }
+    @data = @contacts.group_by {|c| (c.composite_name || "#").get_first }
     @sections = @data.keys
   end
 

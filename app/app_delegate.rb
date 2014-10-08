@@ -153,7 +153,8 @@ class AppDelegate
         UIApplication.sharedApplication.networkActivityIndicatorVisible = false
         if result
           @contacts = []
-          ab.people{|p| p.composite_name}.each do |person|
+          # ab.people{|p| p.composite_name}.each do |person|
+          ab.people{|p| (p.composite_name || "#")}.each do |person|
             phones = person.phones.map {|p| p[:value]}
             # emails_list += person.emails.map {|p| p[:value]}
             phones.each do |phone|
