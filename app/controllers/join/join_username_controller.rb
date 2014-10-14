@@ -197,6 +197,26 @@ class JoinUsernameController < UIViewController
       self.navigationItem.rightBarButtonItem.enabled = false
     end
   end
+  def scaleImage(image)
+    if image.size.width < 512.0
+      newimg = image
+    else
+      scaleBy = 512.0/image.size.width
+      size = CGSizeMake(image.size.width * scaleBy, image.size.height * scaleBy)
+
+      UIGraphicsBeginImageContext(size)
+      context = UIGraphicsGetCurrentContext()
+      transform = CGAffineTransformIdentity
+
+      transform = CGAffineTransformScale(transform, scaleBy, scaleBy)
+      CGContextConcatCTM(context, transform)
+
+      image.drawAtPoint(CGPointMake(0, 0))
+      newimg = UIGraphicsGetImageFromCurrentImageContext()
+      UIGraphicsEndImageContext()
+    end
+    UIImageJPEGRepresentation(newimg, 0.7)
+  end
 
   def next_action
     if @username.text.length > 0 and @password.text.length > 0 and @email.text.length > 0
@@ -210,7 +230,7 @@ class JoinUsernameController < UIViewController
             params[:password] = @password.text
             params[:email]    = @email.text
 
-            data = UIImageJPEGRepresentation(@selfie.image, 0.6)
+            data = scaleImage(@selfie.image)
 
             UIApplication.sharedApplication.networkActivityIndicatorVisible = true
             AFMotion::Client.shared.multipart_post("auth/register", params) do |result, form_data|
