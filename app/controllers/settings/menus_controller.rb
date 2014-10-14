@@ -36,7 +36,7 @@ class MenusController < UITableViewController
         items: [
           {
             title: "Change Selfie",
-            action: "action"
+            action: "change_selfie"
           },
           {
             title: "Change Password",
@@ -126,13 +126,19 @@ class MenusController < UITableViewController
     SimpleSI.alert("TODO: This menu's function will be done later, but you can try Log Out")
   end
 
+  def change_selfie
+    @delegate.navigationController.view.rmq(TopBar).animations.fade_out
+    @delegate.navigationController.setNavigationBarHidden(false, animated: true)
+    a = ChangeSelfieController.new
+    a.hidesBottomBarWhenPushed = true
+    @delegate.navigationController.pushViewController(a, animated:true)
+  end
   def change_password
     @delegate.navigationController.view.rmq(TopBar).animations.fade_out
     @delegate.navigationController.setNavigationBarHidden(false, animated: true)
     a = ChangePasswordController.new
     a.hidesBottomBarWhenPushed = true
     @delegate.navigationController.pushViewController(a, animated:true)
-
   end
 
   def logout

@@ -38,7 +38,7 @@ module ProfileTopBarStylesheet
   end
   def likes_icon(st)
     st.frame = {w:30, h:24, centered: :horizontal, t:15}
-    st.image = image.resource('like_icon')
+    st.image = image.resource('like_icon_old')
   end
   def total_selfies(st)
     st.frame          = {w:st.superview.size.width, h:24, centered: :horizontal, t:50}

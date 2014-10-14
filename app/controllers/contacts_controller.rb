@@ -22,6 +22,7 @@ class ContactsController < UITableViewController
 
   def viewWillAppear(animated)
     @top_bar.update({total_selfies: App::Persistence["total_selfies"], total_likes: App::Persistence["total_likes"], notification: App::Persistence["notification"]})
+    @top_bar.update_avatar
     load_data
     tableView.reloadData
 

@@ -14,11 +14,7 @@ class TopBar < UIToolbar
       @total_likes = o.append(UILabel, :total_likes).get
     end
     @avatar = q.append(UIImageView, :avatar_view).hide.get
-    # JMImageCache.sharedCache.imageForURL(Auth.avatar , completionBlock: lambda do |downloadedImage|
-    #     @avatar.image = downloadedImage
-    #     #@avatar.url = Auth.avatar
-    # end)
-    @avatar.url = Auth.avatar
+
     @username = q.append(UILabel, :username_view).hide.get
     @username.text = Auth.username
 
@@ -36,7 +32,6 @@ class TopBar < UIToolbar
         }
       )
     end
-
 
     q.append(UIButton, :user_info_view).on(:tap) do |sender|
       q.animate(
@@ -118,8 +113,11 @@ class TopBar < UIToolbar
         }
       )
     end
-    @avatar = q.find(:user_info_view).append(UIImageView, :avatar).get
-    @avatar.url = Auth.avatar
+    @avatar_2 = q.find(:user_info_view).append(UIImageView, :avatar).get
+    JMImageCache.sharedCache.imageForURL(Auth.avatar.to_url, completionBlock: lambda do |downloadedImage|
+        @avatar_2.image = downloadedImage
+        @avatar.image = downloadedImage
+    end)
     @username = q.find(:user_info_view).append(UILabel, :username).get
     @username.text = Auth.username
     q.find(:notification_view).append(UIImageView, :notification_icon)
@@ -139,6 +137,12 @@ class TopBar < UIToolbar
     else
       @notification_count.text = count.to_i.to_s
     end
+  end
+  def update_avatar
+    JMImageCache.sharedCache.imageForURL(Auth.avatar.to_url, completionBlock: lambda do |downloadedImage|
+        @avatar.image = downloadedImage
+        @avatar_2.image = downloadedImage
+    end)
   end
 
   def rmq_appended
