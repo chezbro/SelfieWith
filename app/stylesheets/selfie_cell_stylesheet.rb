@@ -45,12 +45,12 @@ module SelfieCellStylesheet
     st.frame            = {t:0, l:0, w: 20, h:20}
     st.view.contentMode = UIViewContentModeScaleAspectFit
     st.image            = image.resource('like_icon')
-    st.view.layer.tap do |l|
-      l.shadowColor   = color.black.CGColor
-      l.shadowOpacity = 0.6
-      l.shadowRadius  = 1.0
-      l.shadowOffset  = [1.0, 2.0]
-    end
+    # st.view.layer.tap do |l|
+    #   l.shadowColor   = color.black.CGColor
+    #   l.shadowOpacity = 0.6
+    #   l.shadowRadius  = 1.0
+    #   l.shadowOffset  = [1.0, 2.0]
+    # end
   end
   def pedding_icon(st)
     st.frame            = {fb:0, l:0, w: 30, h:30}

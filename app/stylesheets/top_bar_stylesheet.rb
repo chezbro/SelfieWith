@@ -44,7 +44,7 @@ module TopBarStylesheet
   end
   def top_bar_menu_close_btn(st)
     st.frame = {t:0, fr:0, w: 60, h:44}
-    st.text  = "close"
+    st.text  = "Close"
   end
   def top_bar_label(st)
     st.frame          = {t:0, l:70, fr:70, h:44}
@@ -112,7 +112,7 @@ module TopBarStylesheet
   end
 
   def profile_overlay(st)
-    st.frame = {l:0, fr:0, t:82, fb:0}
+    st.frame            = {l:0, fr:0, t:82, fb:0}
     st.background_color = color.from_rgba(0,0,0,0.8)
   end
 
@@ -122,8 +122,8 @@ module TopBarStylesheet
   end
   def close_notification(st)
     st.background_color = color.red
-    st.text = "close"
-    st.frame = {fr:0, t:20, w: st.superview.size.width/3, h:60}
+    st.text             = "Close"
+    st.frame            = {fr:0, t:20, w: st.superview.size.width/3, h:60}
   end
 
   def photos_view(st)
@@ -152,7 +152,4 @@ module TopBarStylesheet
     st.color          = color.white
     # st.text         = "120"
   end
-
-
-
 end

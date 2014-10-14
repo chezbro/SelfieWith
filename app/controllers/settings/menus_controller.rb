@@ -35,17 +35,13 @@ class MenusController < UITableViewController
         title: "Account",
         items: [
           {
-            title: "Account Settings",
+            title: "Change Selfie",
+            action: "action"
+          },
+          {
+            title: "Change Password",
             action: "change_password"
           },
-          # {
-          #   title: "Privacy Settings",
-          #   action: "action"
-          # },
-          # {
-          #   title: "Notifications",
-          #   action: "action"
-          # },
           {
             title: "Log Out",
             action: "logout"
@@ -55,18 +51,10 @@ class MenusController < UITableViewController
       {
         title: "App Infomation",
         items: [
-          # {
-          #   title: "Help Center",
-          #   action: "action"
-          # },
           {
             title: "Report a Problem",
             action: "report_bug"
           },
-          # {
-          #   title: "Legal",
-          #   action: "action"
-          # }
         ]
       }
     ]

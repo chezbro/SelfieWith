@@ -70,7 +70,7 @@ class TakeSelfieControllerStylesheet < ApplicationStylesheet
   end
   def person_reminder(st)
     st.frame          = {t: 10, l:0, fr:0, h: 30}
-    st.text           = "Who is this selfie with you?"
+    st.text           = "Who is this SelfieWith you?"
     st.color          = color.white
     st.text_alignment = :center
     st.font           = font.medium
@@ -90,8 +90,8 @@ class TakeSelfieControllerStylesheet < ApplicationStylesheet
     standard_button st
     st.frame            = {t: 130, l: 20, fr:20, fb: 50}
     # st.background_color = color.darker_black
-    st.text             = "Done"
+    st.text             = "Post"
     st.color            = color.white
-    st.font             = font.medium
+    st.font             = font.large
   end
 end

@@ -57,7 +57,7 @@ class TakeSelfieController < UIViewController
         end
       end
       @person_name_label = rmq(:person_picker).append(UILabel, :person_name).get
-      @person_name_label.text = "Pick person form your contacts"
+      @person_name_label.text = "Choose from your Contacts"
       if @person
         update_person(@person)
       end
