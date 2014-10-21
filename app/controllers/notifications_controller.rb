@@ -14,6 +14,8 @@ class NotificationsController < UITableViewController
       table.dataSource = self
       rmq(table).apply_style :table
     end
+
+    @no_data = rmq.append(UIImageView, :no_data)
   end
 
   def load_data
@@ -33,6 +35,11 @@ class NotificationsController < UITableViewController
   end
 
   def tableView(table_view, numberOfRowsInSection: section)
+    if @data.length > 0
+      @no_data.hide
+    else
+      @no_data.show
+    end
     @data.length
   end
 

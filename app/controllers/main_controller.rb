@@ -55,6 +55,8 @@ class MainController < UICollectionViewController
     @refresh_control.attributedTitle = NSAttributedString.alloc.initWithString("Pull to refresh", attributes: {NSForegroundColorAttributeName:UIColor.redColor})
     @refresh_control.addTarget(self, action:'refreshView:', forControlEvents:UIControlEventValueChanged)
     self.collectionView.addSubview(@refresh_control)
+
+    @no_data = rmq.append(UIImageView, :no_data)
   end
   def refreshView(refresh)
     refresh.attributedTitle = NSAttributedString.alloc.initWithString("Refreshing data...", attributes: {NSForegroundColorAttributeName:UIColor.redColor})
@@ -116,6 +118,11 @@ class MainController < UICollectionViewController
     1
   end
   def collectionView(view, numberOfItemsInSection: section)
+    if @selfies.length > 0
+      @no_data.hide
+    else
+      @no_data.show
+    end
     @selfies.length
   end
   def collectionView(view, cellForItemAtIndexPath: index_path)

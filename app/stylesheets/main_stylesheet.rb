@@ -28,4 +28,8 @@ class MainStylesheet < ApplicationStylesheet
     # end
   end
 
+  def no_data(st)
+    st.frame = {t:rmq.device.height - 250, w: 272, h: 140, centered: :horizontal}
+    st.image = image.resource('ask_to_take')
+  end
 end

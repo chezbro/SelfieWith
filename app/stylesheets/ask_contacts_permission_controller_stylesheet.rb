@@ -10,4 +10,9 @@ class AskContactsPermissionControllerStylesheet < ApplicationStylesheet
   def root_view(st)
     st.background_color = color.clear
   end
+
+  def tips(st)
+    st.frame = :full
+    st.image = image.resource('contacts_access')
+  end
 end

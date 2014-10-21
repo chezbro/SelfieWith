@@ -8,6 +8,8 @@ class AskContactsPermissionController < UIViewController
 
     self.view.insertSubview(UIToolbar.alloc.initWithFrame(self.view.bounds), atIndex: 0)
 
+    rmq.append(UIImageView, :tips)
+
     if AddressBook.request_authorization do |granted|
         if granted
           self.dismissViewControllerAnimated(true, completion:nil)
