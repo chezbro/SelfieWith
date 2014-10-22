@@ -18,10 +18,10 @@ class JoinPhoneController < UIViewController
 
     # Create your views here
     rmq.append(UIButton, :country_picker).on(:tap) do |sender|
-      self.presentViewController(UINavigationController.alloc.initWithRootViewController(CountryPickerController.new(delegate: self)), animated:true, completion:nil)
+      # self.presentViewController(UINavigationController.alloc.initWithRootViewController(CountryPickerController.new(delegate: self)), animated:true, completion:nil)
     end
     rmq(:country_picker).append(UIImageView, :country_picker_global)
-    rmq(:country_picker).append(UIImageView, :country_picker_next)
+    # rmq(:country_picker).append(UIImageView, :country_picker_next)
     @country_picker      = rmq(:country_picker).append(UILabel, :country_picker_label).get
     @country_picker.text = "United States"
 

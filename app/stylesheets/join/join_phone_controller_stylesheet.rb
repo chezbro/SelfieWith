@@ -20,10 +20,10 @@ class JoinPhoneControllerStylesheet < ApplicationStylesheet
     st.frame = {w:25, h:25, l:10, centered: :vertical}
     st.image = image.resource('global_icon')
   end
-  def country_picker_next(st)
-    st.frame = {w:9, h:15, fr:10, centered: :vertical}
-    st.image = image.resource('next_indicator')
-  end
+  # def country_picker_next(st)
+  #   st.frame = {w:9, h:15, fr:10, centered: :vertical}
+  #   st.image = image.resource('next_indicator')
+  # end
   def country_picker_label(st)
     st.frame = {h:45, l:45, fr: 45, centered: :vertical}
     st.color = color.white
