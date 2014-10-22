@@ -57,7 +57,7 @@ Motion::Project::App.setup do |app|
   end
 
   app.release do
-    app.codesign_certificate                = 'iPhone Distribution: Chunlea Ju (49C9G223DL)'
+    app.codesign_certificate                = 'iPhone Distribution: eric chesbrough (TX44FE7KFR)'
     app.provisioning_profile                = './SelfieWithDistribution.mobileprovision'
     app.entitlements['aps-environment']     = 'production'
     app.entitlements['get-task-allow']      = true
