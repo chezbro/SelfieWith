@@ -9,11 +9,12 @@ Bundler.require
 Motion::Project::App.setup do |app|
 
   app.name = 'SelfieWith'
-  app.identifier = 'com.chunlea.selfiewith'
-  app.short_version = '0.0.2'
+  app.identifier = 'co.selfiewith.selfiewith'
+  app.short_version = '1.0.0'
   app.version = app.short_version
   app.info_plist['UIViewControllerBasedStatusBarAppearance'] = false
   app.status_bar_style = :light_content
+  app.seed_id = 'TX44FE7KFR'
 
   app.entitlements['keychain-access-groups'] = [
     app.seed_id + '.' + app.identifier
@@ -39,6 +40,7 @@ Motion::Project::App.setup do |app|
   app.device_family = [:iphone]
   app.interface_orientations = [:portrait, :portrait_upside_down]
 
+
   app.files += Dir.glob(File.join(app.project_dir, 'lib/**/*.rb'))
 
   # Use `rake config' to see complete project settings, here are some examples:
@@ -56,17 +58,17 @@ Motion::Project::App.setup do |app|
     pod 'JMImageCache'
   end
 
-  app.release do
+  # app.release do
     app.codesign_certificate                = 'iPhone Distribution: eric chesbrough (TX44FE7KFR)'
-    app.provisioning_profile                = './SelfieWithDistribution.mobileprovision'
+    app.provisioning_profile                = 'SelfieWithDistribution.mobileprovision'
     app.entitlements['aps-environment']     = 'production'
     app.entitlements['get-task-allow']      = true
     app.entitlements['beta-reports-active'] = true
-  end
-  app.development do
-    app.codesign_certificate            = 'iPhone Developer: Chunlea Ju (XR5287VPL6)'
-    app.provisioning_profile            = './SelfieWithDevelopment.mobileprovision'
-    app.entitlements['aps-environment'] = 'development'
-    app.entitlements['get-task-allow']  = true
-  end
+  # end
+  # app.development do
+  #   app.codesign_certificate            = 'iPhone Developer: Chunlea Ju (XR5287VPL6)'
+  #   app.provisioning_profile            = './SelfieWithDevelopment.mobileprovision'
+  #   app.entitlements['aps-environment'] = 'development'
+  #   app.entitlements['get-task-allow']  = true
+  # end
 end
