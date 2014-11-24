@@ -51,8 +51,8 @@ Motion::Project::App.setup do |app|
   # Use `rake config' to see complete project settings, here are some examples:
   #
   # app.fonts = ['Oswald-Regular.ttf', 'FontAwesome.otf'] # These go in /resources
-  # app.frameworks += %w(QuartzCore CoreGraphics MediaPlayer MessageUI CoreData)
-  #
+  app.frameworks += %w(QuartzCore CoreGraphics AVFoundation MediaPlayer MessageUI CoreData)
+
   # app.vendor_project('vendor/Flurry', :static)
   # app.vendor_project('vendor/DSLCalendarView', :static, :cflags => '-fobjc-arc') # Using arc
   #
@@ -62,6 +62,7 @@ Motion::Project::App.setup do |app|
     pod 'JMImageCache'
     pod 'EAIntroView', '~> 2.6'
     pod 'FontAwesomeKit/IonIcons'
+    pod 'EBPhotoPages', '~> 0.9.1'
   end
 
   app.codesign_certificate                = 'iPhone Distribution: eric chesbrough (TX44FE7KFR)'

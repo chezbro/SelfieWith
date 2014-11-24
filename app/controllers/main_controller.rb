@@ -11,6 +11,7 @@ class MainController < UICollectionViewController
   def viewDidLoad
     super
     @selfies ||= []
+    @photos ||= []
     UIApplication.sharedApplication.delegate.get_contacts
     load_data
 
@@ -58,6 +59,7 @@ class MainController < UICollectionViewController
 
     @no_data = rmq.append(UIImageView, :no_data)
   end
+
   def refreshView(refresh)
     refresh.attributedTitle = NSAttributedString.alloc.initWithString("Refreshing data...", attributes: {NSForegroundColorAttributeName:UIColor.redColor})
     UIApplication.sharedApplication.delegate.get_selfies do |result|
@@ -92,6 +94,11 @@ class MainController < UICollectionViewController
       @ask_permission.transitioningDelegate = self
       @ask_permission.modalPresentationStyle = UIModalPresentationCustom
       self.tabBarController.presentViewController(@ask_permission, animated:false, completion:nil)
+    end
+    UIApplication.sharedApplication.delegate.get_selfies do |result|
+      if result
+        update_table(result)
+      end
     end
   end
 
@@ -137,16 +144,17 @@ class MainController < UICollectionViewController
     self.navigationController.view.rmq(TopBar).animations.fade_out
     self.navigationController.setNavigationBarHidden(false, animated: true)
     a = SelfieViewController.new(selfie: @selfies[index_path.row])
+    # photos = Photo.photoWithProperties(imageFile: "icon-512")
+    # @photos[0] = Photo.photoWithProperties({imageFile: "icon-512"})
     a.hidesBottomBarWhenPushed = true
     self.navigationController.pushViewController(a, animated:true)
   end
 
+
   def init_nav
     self.navigationItem.tap do |nav|
-      nav.leftBarButtonItem = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemAction,
-                                                                           target: self, action: :nav_left_button)
-      nav.rightBarButtonItem = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemRefresh,
-                                                                           target: self, action: :nav_right_button)
+      nav.leftBarButtonItem = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemAction, target: self, action: :nav_left_button)
+      nav.rightBarButtonItem = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemRefresh, target: self, action: :nav_right_button)
     end
   end
 

@@ -17,14 +17,13 @@ class SelfieCell < UICollectionViewCell
       end
       @like_count = q.append(UILabel, :like_count).get
       rmq(@like_count).append(UIImageView, :like_icon)
-      # @pedding_icon = q.append(UIImageView, :pedding_icon).get
+      @pedding_icon = q.append(UIImageView, :pedding_icon).get
       # @like_count = q.append(UIButton, :like_count).get
     end
 
   end
 
   def update(params)
-    p params
     if params[:non_taker_names]
       # @title.text = "  Selfie with " + params[:non_taker][0][:name]
       if rmq(self).frame.w > 100

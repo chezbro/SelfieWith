@@ -21,6 +21,7 @@ PODS:
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - EAIntroView (2.6.4)
+  - EBPhotoPages (0.9.1)
   - FontAwesomeKit/Core (2.1.8)
   - FontAwesomeKit/IonIcons (2.1.8):
     - FontAwesomeKit/Core
@@ -32,6 +33,7 @@ PODS:
 DEPENDENCIES:
   - AFNetworking (~> 2.4.1)
   - EAIntroView (~> 2.6)
+  - EBPhotoPages (~> 0.9.1)
   - FontAwesomeKit/IonIcons
   - JMImageCache
   - SIAlertView
@@ -41,6 +43,7 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   AFNetworking: 0aabc6fae66d6e5d039eeb21c315843c7aae51ab
   EAIntroView: 8f66dc6b79f2d52db26af8fc5476a05ffc549d4c
+  EBPhotoPages: 7cdaab9b1efb5709f81597d62f153bdf23abf672
   FontAwesomeKit: a2edea3111dab107b4cc43b85881b404eb063385
   JMImageCache: ae1342abeb16d8c4f05c79c926fc49dc07f84dad
   SIAlertView: d00609a1faa9d82f17b9f0b4eede64e84a577b10
