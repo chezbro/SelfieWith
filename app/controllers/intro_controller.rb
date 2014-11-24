@@ -63,7 +63,22 @@ class IntroController < UIViewController
     if Auth.phone == ""
       self.navigationController.pushViewController(JoinPhoneController.new(user: Auth.user), animated:true)
     elsif Auth.confirmed_at == ""
-      self.navigationController.pushViewController(JoinSMSController.new(user: Auth.user), animated:true)
+      params              = {}
+      params[:username]   = Auth.username
+      params[:auth_token] = Auth.token
+      params[:phone]      = Auth.phone
+
+      AFMotion::SessionClient.shared.post("auth/validatephone", params) do |result|
+        if result.success?
+          if result.object[:user]
+            user = result.object[:user]
+            self.navigationController.pushViewController(JoinSMSController.new(user: user), animated:true)
+          end
+        else
+          SimpleSI.alert("Please check with your phone number, and try again.")
+          Motion::Blitz.dismiss
+        end
+      end
     end
   end
 

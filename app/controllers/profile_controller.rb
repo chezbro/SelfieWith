@@ -1,11 +1,14 @@
-class MainController < UICollectionViewController
+class ProfileController < UICollectionViewController
+  attr_accessor :person
   SELFIE_CELL_ID = "SelfieCell"
 
   def self.new(args = {})
     # Set layout
     # layout = UICollectionViewFlowLayout.alloc.init
     layout = SelfieLayout.alloc.init
-    self.alloc.initWithCollectionViewLayout(layout)
+    s = self.alloc.initWithCollectionViewLayout(layout)
+    s.person = args[:person]
+    s
   end
 
   def viewDidLoad
@@ -26,13 +29,15 @@ class MainController < UICollectionViewController
     # Sets a top of 0 to be below the navigation control, it's best not to do this
     # self.edgesForExtendedLayout = UIRectEdgeNone
 
-    rmq.stylesheet = MainStylesheet
+    rmq.stylesheet = ProfileStylesheet
     init_nav
     rmq(self.view).apply_style :root_view
 
-    @top_bar = rmq(self.navigationController.view).append(TopBar).get.tap do |top_bar|
+    @top_bar = rmq(self.navigationController.view).append(ProfileTopBar).get.tap do |top_bar|
       top_bar.delegate = self
     end
+
+    @top_bar.update(person: @person)
 
     # Create your UIViews here
     # @hello_world_label = rmq.append(UILabel, :hello_world).get
@@ -55,34 +60,24 @@ class MainController < UICollectionViewController
     @refresh_control.attributedTitle = NSAttributedString.alloc.initWithString("Pull to refresh", attributes: {NSForegroundColorAttributeName:UIColor.redColor})
     @refresh_control.addTarget(self, action:'refreshView:', forControlEvents:UIControlEventValueChanged)
     self.collectionView.addSubview(@refresh_control)
-
-    @no_data = rmq.append(UIImageView, :no_data)
   end
   def refreshView(refresh)
     refresh.attributedTitle = NSAttributedString.alloc.initWithString("Refreshing data...", attributes: {NSForegroundColorAttributeName:UIColor.redColor})
-    UIApplication.sharedApplication.delegate.get_selfies do |result|
+    get_selfies do |result|
       refresh.attributedTitle = NSAttributedString.alloc.initWithString(sprintf("Last updated at %s", Time.now.strftime("%l:%M %p")), attributes: {NSForegroundColorAttributeName:UIColor.redColor})
       if result
         update_table(result)
       end
       refresh.endRefreshing
     end
-
-    # if @refreshable_callback && self.respond_to?(@refreshable_callback)
-    #   self.send(@refreshable_callback)
-    # else
-    #   PM.logger.warn "You must implement the '#{@refreshable_callback}' method in your TableScreen."
-    # end
   end
 
 
   def viewWillAppear(animated)
-    @top_bar.update_notification(App::Persistence["notification"])
-    @top_bar.update_avatar
     UIApplication.sharedApplication.statusBarStyle = UIStatusBarStyleLightContent
     UIApplication.sharedApplication.setStatusBarHidden(false, withAnimation:UIStatusBarAnimationFade)
     self.navigationController.setNavigationBarHidden(true, animated: true)
-    self.navigationController.view.rmq(TopBar).show
+    self.navigationController.view.rmq(ProfileTopBar).show
     self.tabBarController.tabBar.frame = CGRectMake(0, UIScreen.mainScreen.bounds.size.height-80, UIScreen.mainScreen.bounds.size.width, 80)
     self.tabBarController.tabBar.subviews.first.frame = CGRectMake(0, 0, self.tabBarController.tabBar.frame.size.width, 80)
     # self.navigationController.view.rmq(TopBar).show
@@ -96,8 +91,7 @@ class MainController < UICollectionViewController
   end
 
   def load_data
-    UIApplication.sharedApplication.delegate.get_selfies do |result|
-      # @selfies = UIApplication.sharedApplication.delegate.selfies
+    get_selfies do |result|
       if result
         update_table(result)
       end
@@ -106,23 +100,27 @@ class MainController < UICollectionViewController
 
   def update_table(result)
     @selfies       = result[:selfies]
-    App::Persistence["total_selfies"] = result[:total_selfies]
-    App::Persistence["total_likes"]   = result[:total_likes]
-    App::Persistence["notification"]  = result[:notification]
-    @top_bar.update({total_selfies: App::Persistence["total_selfies"], total_likes: App::Persistence["total_likes"], notification: App::Persistence["notification"]})
-    UIApplication.sharedApplication.setApplicationIconBadgeNumber(App::Persistence["notification"].to_i)
+    @total_selfies = result[:total_selfies]
+    @total_likes   = result[:total_likes]
+    @top_bar.update({total_selfies: @total_selfies, total_likes: @total_likes})
     collectionView.reloadData
   end
+  def get_selfies(&block)
+    AFMotion::SessionClient.shared.get("u/#{@person.username}") do |result|
+      if result.success?
+        @selfies = result.object[:selfies]
+        block.call(result.object) if block
+      else
+        block.call(nil) if block
+      end
+    end
+  end
+
 
   def numberOfSectionsInCollectionView(view)
     1
   end
   def collectionView(view, numberOfItemsInSection: section)
-    if @selfies.length > 0
-      @no_data.hide
-    else
-      @no_data.show
-    end
     @selfies.length
   end
   def collectionView(view, cellForItemAtIndexPath: index_path)
@@ -134,7 +132,7 @@ class MainController < UICollectionViewController
   end
   def collectionView(view, didSelectItemAtIndexPath: index_path)
     cell = view.cellForItemAtIndexPath(index_path)
-    self.navigationController.view.rmq(TopBar).animations.fade_out
+    self.navigationController.view.rmq(ProfileTopBar).animations.fade_out
     self.navigationController.setNavigationBarHidden(false, animated: true)
     a = SelfieViewController.new(selfie: @selfies[index_path.row])
     a.hidesBottomBarWhenPushed = true
@@ -156,6 +154,20 @@ class MainController < UICollectionViewController
 
   def nav_right_button
     puts 'Right button'
+  end
+
+  def take_selfie
+    p "take!!"
+    @takeSelfie = TakeSelfieController.new(person: @person)
+    @takeSelfie.transitioningDelegate = self
+    @takeSelfie.modalPresentationStyle = UIModalPresentationCustom
+    p @takeSelfie
+    self.presentViewController(@takeSelfie, animated:true, completion:nil)
+  end
+
+  def close
+    self.navigationController.view.rmq(ProfileTopBar).hide.remove
+    self.navigationController.popViewControllerAnimated(true)
   end
 
   # Remove if you are only supporting portrait

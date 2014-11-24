@@ -77,7 +77,6 @@ class AppDelegate
   end
   def open_main_controller
     if Auth.needconfirm?
-      Auth.reset
       open_confirm_controller
     else
       @takeSelfieTab = UIViewController.alloc.init
@@ -127,7 +126,55 @@ class AppDelegate
     # AFMotion::Client.shared.operationQueue.cancelAllOperations
     Auth.reset
     UIApplication.sharedApplication.setApplicationIconBadgeNumber(0)
-    open_welcome_controller
+    open_intro_controller
+  end
+
+  def get_contacts(&block)
+    if AddressBook.authorized?
+      UIApplication.sharedApplication.networkActivityIndicatorVisible = true
+
+      # NSLog("AddressBook.authorized!")
+      ab = AddressBook::AddrBook.new
+      phones_list = []
+      # emails_list = []
+      ab.people.each do |person|
+        phones_list += person.phones.map {|p| p[:value]}
+        # emails_list += person.emails.map {|p| p[:value]}
+      end
+
+      params = {}
+      params[:phones] = phones_list
+      # params[:emails] = emails_list
+      AFMotion::SessionClient.shared.post("contacts", params) do |result|
+        if result.success?
+          @contacts = []
+          ab.people{|p| (p.composite_name || "#")}.each do |person|
+            phones = person.phones.map {|p| p[:value]}
+            # emails_list += person.emails.map {|p| p[:value]}
+            phones.each do |phone|
+              if result.object.keys.include? phone
+                person.username = result.object[phone.to_s][:username]
+                person.avatar   = result.object[phone.to_s][:avatar]
+              end
+            end
+            @contacts << person
+          end
+          block.call(result) if block
+        else
+          block.call(nil) if block
+        end
+      end
+    end
+  end
+  def get_selfies(&block)
+    AFMotion::SessionClient.shared.get("selfies") do |result|
+      if result.success?
+        @selfies = result.object[:selfies]
+        block.call(result.object) if block
+      else
+        block.call(nil) if block
+      end
+    end
   end
 
   # Remove this if you are only supporting portrait

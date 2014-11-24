@@ -81,8 +81,8 @@ class LoginController < UIViewController
         if result.success?
           if result.object[:user]
             user = result.object[:user]
-            Auth.set({id: user[:id], username: user[:username], email: user[:email], phone: user[:phone], token: user[:token], avatar: user[:avatar], confirmed_at: user[:confirmed_at]})
-            UIApplication.sharedApplication.delegate.open_main_screens
+            Auth.set({id: user[:id], username: user[:username], email: user[:email], phone: user[:phone], token: user[:token], avatar: user[:avatar_url], confirmed_at: user[:confirmed_at]})
+            UIApplication.sharedApplication.delegate.open_main_controller
           else
             SimpleSI.alert({
               message: "We didn't get your user information, please try again later.",

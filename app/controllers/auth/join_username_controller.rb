@@ -243,7 +243,7 @@ class JoinUsernameController < UIViewController
               elsif result.success?
                 if result.object[:user]
                   user = result.object[:user]
-                  Auth.set({id: user[:id], username: user[:username], email: user[:email], phone: user[:phone], token: user[:token], avatar: user[:avatar], confirmed_at: user[:confirmed_at]})
+                  Auth.set({id: user[:id], username: user[:username], email: user[:email], phone: user[:phone], token: user[:token], avatar: user[:avatar_url], confirmed_at: user[:confirmed_at]})
                   self.navigationController.pushViewController(JoinPhoneController.new(user: user), animated:true)
                 end
               elsif result.object && result.operation.response.statusCode.to_s =~ /401/

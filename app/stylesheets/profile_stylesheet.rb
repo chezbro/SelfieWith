@@ -1,6 +1,6 @@
-class MainStylesheet < ApplicationStylesheet
+class ProfileStylesheet < ApplicationStylesheet
 
-  include TopBarStylesheet
+  include ProfileTopBarStylesheet
   include SelfieCellStylesheet
 
   def setup
@@ -13,7 +13,7 @@ class MainStylesheet < ApplicationStylesheet
   end
 
   def collection_view(st)
-    st.view.contentInset = [60, 0, 0, 0]
+    st.view.contentInset = [140, 0, 0, 0]
     st.background_color = color.bg_black
     st.view.alwaysBounceVertical = true
 
@@ -28,8 +28,4 @@ class MainStylesheet < ApplicationStylesheet
     # end
   end
 
-  def no_data(st)
-    st.frame = {t:rmq.device.height - 250, w: 272, h: 140, centered: :horizontal}
-    st.image = image.resource('ask_to_take')
-  end
 end
