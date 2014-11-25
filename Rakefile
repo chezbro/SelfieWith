@@ -10,8 +10,8 @@ Motion::Project::App.setup do |app|
 
   app.name = 'SelfieWith'
   app.identifier = 'co.selfiewith.selfiewith'
-  app.short_version = '0.1.0'
-  app.version = app.short_version
+  app.short_version = '1.0.0'
+  app.version = '2'
   app.info_plist['UIViewControllerBasedStatusBarAppearance'] = false
   app.status_bar_style = :light_content
   app.seed_id = 'TX44FE7KFR'
